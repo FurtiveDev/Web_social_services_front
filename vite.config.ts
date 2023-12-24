@@ -20,7 +20,7 @@ const parseTsConfigPaths = (paths: Record<string, string[]>): Record<string, str
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "https://github.com/FurtiveDev/Web_social_services_front",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: parseTsConfigPaths(tsconfig.compilerOptions.paths),
