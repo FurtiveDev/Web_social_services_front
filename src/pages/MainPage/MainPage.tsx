@@ -104,11 +104,26 @@ const MainPage: React.FC = () => {
                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                     <div className='w-100'>
                         <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название услуги..." />
+                            <Form.Control style={{height: '100%', borderColor: 'black',borderWidth: 3, fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название услуги..." />
                         </Form.Group>
                     </div>
                     
-                    <Button style={{backgroundColor: "#2787F5", padding: "15px 40px", borderColor: "#000", fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>Найти</Button>
+                    <Button 
+                style={{ 
+                    backgroundColor: "#1A1A2E", 
+                    padding: "15px 40px", 
+                    borderColor: "#000", 
+                    fontSize: 18, 
+                    height: 60,
+                    display: 'flex', // Добавить для выравнивания иконки и текста
+                    alignItems: 'center', // Добавить для вертикального выравнивания
+                    justifyContent: 'center' // Добавить для горизонтального выравнивания
+                }} 
+                onClick={() => handleSearchButtonClick()}
+                >
+                <i className="fa fa-search" aria-hidden="true"></i> {/* Иконка поиска */}
+                <span style={{ marginLeft: '10px' }}>Найти</span>
+                </Button>
                 </Form>
 
                 <div className={styles["content__cards"]}>

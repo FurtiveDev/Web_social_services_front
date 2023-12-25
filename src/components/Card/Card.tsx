@@ -28,11 +28,27 @@ const OneCard: React.FC<CardProps> = ({id, title, description, src, onButtonClic
         </div>
       </Link>
       <Card.Body className='d-flex flex-column'>
-        <Card.Title className='pt-3'>{title}</Card.Title>
-        <Card.Subtitle>Описание: {description}</Card.Subtitle>
+        <Card.Title className='pt-3'><strong>{title}</strong></Card.Title>
+        <Card.Subtitle>
+        <strong>Описание:</strong> {description}
+        </Card.Subtitle>
         <div className='mt-auto w-100' style={{position: 'relative', height: 60}}>
-          <Button style={{ backgroundColor: '#2787F5', padding: '15px 30px', borderColor: "#000", position: 'absolute', right: 0, marginBottom: 50, fontSize: 18 }} onClick={onButtonClick} variant="primary">Добавить</Button>
-        </div>
+        <Button 
+        style={{ 
+          backgroundColor: '#1A1A2E', // изменен цвет фона
+          padding: '15px 30px', 
+          borderColor: "0A3D62", // изменен цвет границы
+          position: 'absolute',
+          right: 0,
+          marginBottom: 50, 
+          fontSize: 18 
+        }} 
+        onClick={onButtonClick} 
+        variant="primary"
+      >
+        Добавить
+      </Button>
+          </div>
       </Card.Body>
     </Card>
   );
