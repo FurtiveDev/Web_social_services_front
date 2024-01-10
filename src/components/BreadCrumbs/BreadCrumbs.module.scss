@@ -1,0 +1,27 @@
+.breadcrumbs {
+    margin-bottom: 40px;
+    font-size: 20px;
+
+    &__item {
+
+
+        &-link {
+            text-decoration: none;
+            color: #3D348B;
+            font-size: 16px;
+        }
+
+        &-last {
+            // background-color: black;
+            color: black;
+            // padding: 10px;
+            border-radius: 10px;
+        }
+
+        &-icon {
+            margin: 0 10px;
+        }
+    }
+}
+
+// color: '#3D348B'

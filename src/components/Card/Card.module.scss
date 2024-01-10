@@ -1,0 +1,54 @@
+@import 'styles/variables.scss';
+@import 'styles/mixins.scss';
+
+.card {
+    &__image {
+        cursor: pointer;
+        width: 100%;
+        &-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        &-link {
+            display: block;
+            text-decoration: none;
+        }
+    }
+
+    &__info {
+        min-height: 150px;
+    }
+
+    &__button {
+        background-color: black;
+        padding: 10px 25px;
+        border-color: #000;
+        position: absolute;
+        bottom: 5px; // Если кнопка должна быть у нижнего края
+        left: 50%; // Выравнивание относительно левого края
+        transform: translateX(-50%); // Смещение кнопки обратно на 50% её ширины
+        font-size: 18px;
+    &:hover {
+        background-color: gray;
+    }
+        &-wrapper {
+            position: relative;
+            height: 70px;
+        }
+    }
+}
+
+
+
+@include mobile {
+    .card {
+        width: 400px;
+    }
+}
+
+@include extraSmallMobile {
+    .card {
+        width: 100%;
+    }
+}

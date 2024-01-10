@@ -1,0 +1,255 @@
+@import 'styles/variables.scss';
+@import 'styles/mixins.scss';
+$primary-color: #2e2b2b; // New primary color
+$secondary-color: #000000; // New secondary color
+$accent-color: #050505; // New accent color
+$background-color: #F7FFF7; // New background color
+$text-color: #ffffff; // New text color
+$complimentary-color: #dcd6cc; // New complimentary color
+
+.main__page {
+    position: relative;
+
+    &-wrapper {
+        padding-top: 50px;
+        max-width: 1240px;
+        margin: 0 auto;
+        background-color: $background-color; // Changed background color
+    }
+
+    &-intro {
+        width: 100%;
+        padding: 60px 0;
+        background-color: $primary-color; // Changed background color
+        border: 5px solid $accent-color; // Added border
+    }
+
+    &-image {
+        width: 100%;
+        filter: grayscale(100%); // Added image filter
+    }
+
+    &-title {
+        font-size: 60px;
+        font-weight: bold;
+        color: $text-color; // Changed text color
+        text-align: center;
+        padding-bottom: 20px;
+        text-shadow: 2px 2px $secondary-color; // Added text shadow
+    }
+
+    &-subtitle {
+        font-size: 30px;
+        font-weight: bold;
+        color: $complimentary-color; // Changed text color
+        text-align: center;
+    }
+
+    &-part-title {
+        font-size: 30px;
+        font-weight: bold;
+        color: $secondary-color; // Changed text color
+        margin-bottom: 25px;
+    }
+
+    &-about {
+        &-wrapper {
+            display: flex;
+            flex-wrap: wrap; // Changed to allow wrapping
+            gap: 50px; // Increased gap
+        }
+        
+        &-info {
+            background-color: $accent-color; // Changed background color
+            border-radius: 10px;
+            max-width: 600px;
+            padding: 30px;
+            font-size: 20px;
+            list-style-type: none;
+        }
+
+        &-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 20px;
+            color: $text-color; // Changed text color
+
+            &::before {
+                background-color: $secondary-color; // Changed bullet color
+            }
+        }
+    }
+
+    &-stats {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px; // Reduced gap
+
+        &-item {
+            background-color: $background-color; // Changed background color
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Added shadow
+        }
+
+        &-title {
+            font-size: 30px;
+            color: $primary-color; // Changed text color
+        }
+
+        &-subtitle {
+            font-size: 20px;
+            color: $secondary-color; // Changed text color
+        }
+    }
+
+    &-categories {
+        padding-top: 70px;
+        padding-bottom: 70px;
+
+        &-cards {
+            color: $text-color; // Changed text color
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 60px;
+        }
+
+        &-card {
+            background-color: black;
+            border-radius: 10px;
+            height: 180px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        &-title {
+            font-size: 20px;
+        }
+    }
+}
+
+
+
+@include tablet {
+    .main__page-wrapper {
+      max-width: 1100px;
+    }
+}
+  
+@include largeTablet {
+    .main__page-wrapper {
+      max-width: 900px;
+    }
+}
+  
+@include mediumTablet {
+    .main__page {
+        &-wrapper {
+            max-width: 800px;
+        }
+    
+        &-about {
+            &-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            &-info {
+                max-width: 100%;
+            }
+        }
+
+        &-stats {
+            gap: 15px;
+            text-align: center;
+          }
+    }
+}
+  
+@include smallTablet {
+    .main__page-wrapper {
+      max-width: 700px;
+    }
+}
+
+@include mobileLandscape {
+    .main__page {
+        &-wrapper {
+            max-width: 600px;
+        }
+    
+        &-categories {
+            &-cards {
+                gap: 10px;
+            }
+        }
+    }
+
+
+}
+  
+@include mobile {
+    .main__page {
+        &-wrapper {
+            max-width: 500px;
+        }
+
+        &-title {
+            font-size: 46x;
+        }
+        
+        &-subtitle {
+            font-size: 23px;
+        }
+    }
+
+    
+}
+  
+@include smallMobile {
+    .main__page {
+        &-wrapper {
+            max-width: 450px;
+        }
+      
+        &-categories {
+            &-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            &-title {
+                font-size: 14px;
+            }
+        }
+    }
+}
+  
+@include extraSmallMobile {
+    .main__page-wrapper {
+      max-width: 380px;
+    }
+}
+  
+@include ultraSmallMobile {
+    .main__page {
+        &-wrapper {
+            max-width: 330px;
+        }
+
+        &-categories {
+            &-card {
+                height: 150px;
+            }
+        }
+    }
+}
+  
+@include tinyMobile {
+    .main__page-wrapper {
+      max-width: 290px;
+    }
+}
