@@ -6,12 +6,12 @@ import Image from "react-bootstrap/Image"
 import styles from './DetaliedPage.module.scss'
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { mockSubscriptions } from '../../../consts'
+import { mockServices } from '../../../consts'
 import {useDispatch} from "react-redux";
-import { useSubscription, useLinksMapData, setSubscriptionAction, setLinksMapDataAction } from "../../Slices/DetailedSlice"
+import { useService, useLinksMapData, setServiceAction, setLinksMapDataAction } from "../../Slices/DetailedSlice"
 import axios from 'axios';
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
     id_service: number,
     service_name: string,
     description: string,
@@ -25,17 +25,17 @@ export type ReceivedSubscriptionData = {
 
 const DetailedPage: React.FC = () => {
     const dispatch = useDispatch();
-    const subscription = useSubscription();
+    const subscription = useService();
     const linksMap = useLinksMapData();
 
     const params = useParams();
     const id = params.id === undefined ? '' : params.id;
 
-    const getSubscription = async () => {
+    const getService = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/api/services/${id}/`);
             const jsonData = response.data;
-            dispatch(setSubscriptionAction({
+            dispatch(setServiceAction({
                 id: Number(jsonData.id_service), 
                 title: jsonData.service_name,
                 info: jsonData.description,
@@ -48,14 +48,14 @@ const DetailedPage: React.FC = () => {
             newLinksMap.set(jsonData.service_name, '/services/' + jsonData.id_service);
             dispatch(setLinksMapDataAction(newLinksMap))
         } catch {
-            const sub = mockSubscriptions.find(item => item.id === Number(id));
+            const sub = mockServices.find(item => item.id === Number(id));
             if (sub) {
-                dispatch(setSubscriptionAction(sub))
+                dispatch(setServiceAction(sub))
             }
         }
     };
     useEffect(() => {
-        getSubscription();
+        getService();
 
         return () => { // Возможно лучше обобщить для всех страниц в отдельный Slice !!!
             dispatch(setLinksMapDataAction(new Map<string, string>([['Услуги', '/services']])))

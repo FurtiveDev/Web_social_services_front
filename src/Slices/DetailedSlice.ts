@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
-interface SubscriptionData {
+interface ServiceData {
   id: number,
   title: string,
   info: string,
@@ -11,7 +11,7 @@ interface SubscriptionData {
 }
 
 interface DataState {
-  subscription: SubscriptionData,
+  subscription: ServiceData,
   LinksMapData: Map<string, string>
 }
 
@@ -22,7 +22,7 @@ const dataSlice = createSlice({
     LinksMapData: new Map<string, string>([['Услуги', '/']])
   } as DataState,
   reducers: {
-    setSubscription(state, action: PayloadAction<SubscriptionData>) {
+    setService(state, action: PayloadAction<ServiceData>) {
         state.subscription = action.payload
     },
     setLinksMapData(state, action: PayloadAction<Map<string, string>>) {
@@ -32,14 +32,14 @@ const dataSlice = createSlice({
   },
 });
 
-export const useSubscription = () =>
+export const useService = () =>
   useSelector((state: { detailedData: DataState }) => state.detailedData.subscription);
 
 export const useLinksMapData = () =>
   useSelector((state: { detailedData: DataState }) => state.detailedData.LinksMapData);
 
 export const {
-    setSubscription: setSubscriptionAction,
+    setService: setServiceAction,
     setLinksMapData: setLinksMapDataAction
 } = dataSlice.actions;
 

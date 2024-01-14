@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react'
-import styles from './AdminSubscriptionsPage.module.scss'
+import styles from './AdminServicesPage.module.scss'
 import {useDispatch} from "react-redux";
-import {useTitleValue, useSubscriptions, setTitleValueAction, setSubscriptionsAction} from "../../Slices/MainSlice";
+import {useTitleValue, useServices, setTitleValueAction, setServicesAction} from "../../Slices/MainSlice";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
     id_service: number,
     service_name: string,
     description: string,
@@ -39,11 +39,11 @@ const columns = [
     
 ]
 
-const AdminSubscriptionsPage = () => {
+const AdminServicesPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const subscriptions = useSubscriptions()
-    const [isSubscriptionsShow, setIsSubscriptionsShow] = useState(true)
+    const subscriptions = useServices()
+    const [isServicesShow, setIsServicesShow] = useState(true)
 
 
 
@@ -54,7 +54,7 @@ const AdminSubscriptionsPage = () => {
     <div className={styles.admin__page}>
         <Header/>
         <div className={styles['admin__page-wrapper']}>
-            {isSubscriptionsShow && <><h1 className={styles['admin__page-title']}>Список услуг</h1>
+            {isServicesShow && <><h1 className={styles['admin__page-title']}>Список услуг</h1>
 
             <div className={styles['admin__page-title']}>
                 <CustomTable className={styles['admin__page-table']} data={subscriptions} 
@@ -67,4 +67,4 @@ const AdminSubscriptionsPage = () => {
   )
 }
 
-export default AdminSubscriptionsPage
+export default AdminServicesPage

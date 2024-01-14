@@ -4,21 +4,21 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Header from 'components/Header';
 import OneCard from 'components/Card';
-import styles from './SubscriptionsPage.module.scss'
+import styles from './ServicesPage.module.scss'
 import { ChangeEvent } from 'react';
 import BreadCrumbs from 'components/BreadCrumbs';
 import Loader from 'components/Loader';
 import { toast } from 'react-toastify';
-import { mockSubscriptions } from '../../../consts';
+import { mockServices } from '../../../consts';
 import {useDispatch} from "react-redux";
-import {useTitleValue, useSubscriptions, useIsSubscriptionsLoading,
-      setTitleValueAction, setSubscriptionsAction, setIsSubscriptionsLoadingAction} from "../../Slices/MainSlice";
+import {useTitleValue, useServices, useIsServicesLoading,
+      setTitleValueAction, setServicesAction, setIsServicesLoadingAction} from "../../Slices/MainSlice";
 
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
 
 import { useCurrentApplicationDate, useSubscripitonsFromApplication,
-    setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction,useCurrentApplicationId } from 'Slices/ApplicationsSlice'
-export type Subscription = {
+    setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction,useCurrentApplicationId } from 'Slices/ApplicationsSlice'
+export type Service = {
     id: number,
     title: string,
     info: string,
@@ -27,7 +27,7 @@ export type Subscription = {
     sup: string,
 }
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
     id_service: number,
     service_name: string,
     description: string,
@@ -47,14 +47,14 @@ export type ReceivedUserData = {
 }
 
 
-const SubscriptionsPage: React.FC = () => {
+const ServicesPage: React.FC = () => {
     const currentApplicationId = useCurrentApplicationId();
     const dispatch = useDispatch()
     const titleValue = useTitleValue();
-    const subscriptions = useSubscriptions();
+    const subscriptions = useServices();
     const subscripitonsFromApplication = useSubscripitonsFromApplication();
     const linksMap = useLinksMapData();
-    const isLoading = useIsSubscriptionsLoading()
+    const isLoading = useIsServicesLoading()
     // const [isLoading, setIsLoading] = React.useState(false)
 
     // const linksMap = new Map<string, string>([
@@ -63,15 +63,15 @@ const SubscriptionsPage: React.FC = () => {
 
     React.useEffect(() => {
         // Здесь вызываем функцию загрузки данных при монтировании компонента
-        dispatch(setIsSubscriptionsLoadingAction(true));
-        getSubscriptions();
+        dispatch(setIsServicesLoadingAction(true));
+        getServices();
         // Установка ссылок для breadcrumbs
         dispatch(setLinksMapDataAction(new Map<string, string>([
           ['Услуги', '/services']
         ])));
       }, []); // Пустой массив зависимостей гарантирует, что эффект выполнится только один раз
 
-    const getSubscriptions = async () => {
+    const getServices = async () => {
         let url = 'http://localhost:8000/api/services/';
         if (titleValue) {
             url += `?title=${titleValue}`;
@@ -82,7 +82,7 @@ const SubscriptionsPage: React.FC = () => {
                 withCredentials: true 
             });
             const jsonData = response.data.services;
-            const newArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
+            const newArr = jsonData.map((raw: ReceivedServiceData) => ({
                 id: raw.id_service,
                 title: raw.service_name,
                 info: raw.description,
@@ -90,19 +90,19 @@ const SubscriptionsPage: React.FC = () => {
                 loc: raw.location_service,
                 sup: raw.support_hours
             }));
-            dispatch(setSubscriptionsAction(newArr));
+            dispatch(setServicesAction(newArr));
         }
         catch (error) {
             if (titleValue) {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => 
-                    mockSubscription.title.includes(titleValue)
+                const filteredArray = mockServices.filter(mockService => 
+                    mockService.title.includes(titleValue)
                 );
-                dispatch(setSubscriptionsAction(filteredArray));
+                dispatch(setServicesAction(filteredArray));
             } else {
-                dispatch(setSubscriptionsAction(mockSubscriptions));
+                dispatch(setServicesAction(mockServices));
             }
         } finally {
-            dispatch(setIsSubscriptionsLoadingAction(false));
+            dispatch(setIsServicesLoadingAction(false));
         }
     };
     const getCurrentApplication = async () => {
@@ -118,13 +118,13 @@ const SubscriptionsPage: React.FC = () => {
             console.log(error)
         }
     }
-    const postSubscriptionToApplication = async (id: number) => {
+    const postServiceToApplication = async (id: number) => {
         try {
             const response = await axios(`http://localhost:8000/api/services_requests/${id}/put/`, {
                 method: 'POST',
                 withCredentials: true,
             })
-            const addedSubscription = {
+            const addedService = {
                 id: response.data.id_service,
                 title: response.data.service_name,
                 info: response.data.description,
@@ -133,7 +133,7 @@ const SubscriptionsPage: React.FC = () => {
                 loc: response.data.location_service
             }
             getCurrentApplication();
-            dispatch(setSubscriptionsFromApplicationAction([...subscripitonsFromApplication, addedSubscription]))
+            dispatch(setServicesFromApplicationAction([...subscripitonsFromApplication, addedService]))
             toast.success("Услуга успешно добавлена в заявку!");
         } catch {
             toast.error("Услуга уже добавлена в заявку!");
@@ -141,8 +141,8 @@ const SubscriptionsPage: React.FC = () => {
     }
 
     const handleSearchButtonClick = () => {
-        dispatch(setIsSubscriptionsLoadingAction(true))
-        getSubscriptions();
+        dispatch(setIsServicesLoadingAction(true))
+        getServices();
     }
 
     const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -179,11 +179,11 @@ const SubscriptionsPage: React.FC = () => {
                     <Loader className={styles.loader} size='l' />
                  </div>
                  : <div className={styles["main__page-cards"]}>
-                        {subscriptions.map((subscription: Subscription) => (
+                        {subscriptions.map((subscription: Service) => (
                             <OneCard
                                 id={subscription.id}
                                 src={subscription.src}
-                                onButtonClick={() => postSubscriptionToApplication(subscription.id)}
+                                onButtonClick={() => postServiceToApplication(subscription.id)}
                                 title={subscription.title}
                                 description={subscription.info}
                             />
@@ -194,4 +194,4 @@ const SubscriptionsPage: React.FC = () => {
         </div>
     );
                 }
-export default SubscriptionsPage;
+export default ServicesPage;

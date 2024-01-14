@@ -6,15 +6,15 @@ import Header from 'components/Header'
 import Button from 'react-bootstrap/Button'
 import BreadCrumbs from 'components/BreadCrumbs';
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
-import SubscriptionsTable from 'components/SubscriptionsTable'
+import ServicesTable from 'components/ServicesTable'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { useCurrentApplicationDate, useSubscripitonsFromApplication,
-  setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
+  setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
 
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
     id_service: number,
     service_name: string,
     description: string,
@@ -33,7 +33,7 @@ const CurrentApplicationPage = () => {
   const linksMap = useLinksMapData();
 
   React.useEffect(() => {
-    SubscriptionToApplicationlist();
+    ServiceToApplicationlist();
     dispatch(setLinksMapDataAction(new Map<string, string>([
       ['Текущая заявка', '/request'],
   ])))
@@ -46,20 +46,20 @@ const CurrentApplicationPage = () => {
         method: 'PUT',
         withCredentials: true
       })
-      dispatch(setSubscriptionsFromApplicationAction([]));
+      dispatch(setServicesFromApplicationAction([]));
       dispatch(setCurrentApplicationDateAction(''));
     } catch(error) {
       throw error;
     }
   }
-  const SubscriptionToApplicationlist = async () => {
+  const ServiceToApplicationlist = async () => {
     try {
         const response = await axios(`http://localhost:8000/api/requests/${currentApplicationId}/`, {
           method: 'GET',
           withCredentials: true,
         })
         dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
-        const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
+        const newArr = response.data.services.map((raw: ReceivedServiceData) => ({
           id: raw.id_service,
           title: raw.service_name,
           info: raw.description,
@@ -69,7 +69,7 @@ const CurrentApplicationPage = () => {
           status: raw.status
       }));
     
-      dispatch(setSubscriptionsFromApplicationAction(newArr))
+      dispatch(setServicesFromApplicationAction(newArr))
       } catch(error) {
         console.log("random!")
         throw error;
@@ -84,7 +84,7 @@ const CurrentApplicationPage = () => {
       withCredentials: true
     })
 
-    dispatch(setSubscriptionsFromApplicationAction([]));
+    dispatch(setServicesFromApplicationAction([]));
     dispatch(setCurrentApplicationDateAction(''));
     }
     catch(error) {
@@ -121,7 +121,7 @@ const CurrentApplicationPage = () => {
           </h5>
 
           <div className={styles['application__page-info']}>
-            <SubscriptionsTable subscriptions={subscriptions} className={styles['application__page-info-table']}/>
+            <ServicesTable subscriptions={subscriptions} className={styles['application__page-info-table']}/>
 
             <div className={styles['application__page-info-btns']}>
               <Button onClick={() => handleSendButtonClick()} className={styles['application__page-info-btn']}>Отправить</Button>

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSubscriptionsAction,useSubscriptions } from "Slices/MainSlice"; // Adjust this import to your actual file structure
+import { setServicesAction,useServices } from "Slices/MainSlice"; // Adjust this import to your actual file structure
 import Header from 'components/Header';
 import ModalWindow from 'components/ModalWindow';
-import styles from './EditSubscriptionPage.module.scss';
+import styles from './EditServicePage.module.scss';
 import Button from 'react-bootstrap/Button';
-export type SubscriptionData = {
+export type ServiceData = {
   id: number;
   title: string;
   info: string;
@@ -17,7 +17,7 @@ export type SubscriptionData = {
   status: string;
 };
 
-const EditSubscriptionPage: React.FC = () => {
+const EditServicePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const EditSubscriptionPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState<string>('');
 
-  const subscriptions = useSubscriptions()
+  const subscriptions = useServices()
   const [title, setTitle] = useState('');
   const [info, setInfo] = useState('');
   const [loc, setLoc] = useState('');
@@ -63,7 +63,7 @@ const EditSubscriptionPage: React.FC = () => {
             withCredentials: true,
           }
         );
-        const updatedSubscriptions = subscriptions.map(subscription => {
+        const updatedServices = subscriptions.map(subscription => {
           if (subscription.id === id) {
             return {
               ...subscription,
@@ -72,8 +72,8 @@ const EditSubscriptionPage: React.FC = () => {
           }
           return subscription;
         });
-        dispatch(setSubscriptionsAction(updatedSubscriptions))
-        console.log(updatedSubscriptions)
+        dispatch(setServicesAction(updatedServices))
+        console.log(updatedServices)
         setSelectedImage(null)
 
       } catch (error) {
@@ -83,7 +83,7 @@ const EditSubscriptionPage: React.FC = () => {
       }
     }
   };
-  const putSubscription = async (id: number) => {
+  const putService = async (id: number) => {
     try {
       const response = await axios(`http://localhost:8000/api/services/${id}/put/`, {
         method: 'PUT',
@@ -97,7 +97,7 @@ const EditSubscriptionPage: React.FC = () => {
         withCredentials: true
       });
       navigate('/admin');
-      const updatedSubscriptions = subscriptions.map(subscription => {
+      const updatedServices = subscriptions.map(subscription => {
         if (subscription.id === id) {
           return {
             ...subscription,
@@ -111,7 +111,7 @@ const EditSubscriptionPage: React.FC = () => {
         return subscription;
       });
 
-      dispatch(setSubscriptionsAction(updatedSubscriptions));
+      dispatch(setServicesAction(updatedServices));
     } catch (e) {
       console.error(e);
     }
@@ -119,7 +119,7 @@ const EditSubscriptionPage: React.FC = () => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await putSubscription(parseInt(id ?? ''));
+    await putService(parseInt(id ?? ''));
   };
   return (
     <div className={styles.container}>
@@ -207,4 +207,4 @@ const EditSubscriptionPage: React.FC = () => {
   </div>
   );
 };
-export default EditSubscriptionPage;
+export default EditServicePage;

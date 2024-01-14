@@ -17,7 +17,7 @@ import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 // import { useNavigate } from 'react-router-dom';
 
 const cookies = new Cookies();
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
     id_service: number,
     service_name: string,
     description: string,
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
     //     }
     // }
 
-    // const getSubscriptions = async () => {
+    // const getServices = async () => {
     //     let url = 'http://localhost:8000/api/services/';
     //     try {
     //         const response = await axios(url, {
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
     //             withCredentials: true 
     //         });
     //         const jsonData = response.data.services;
-    //         const newArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
+    //         const newArr = jsonData.map((raw: ReceivedServiceData) => ({
     //             id: raw.id_service,
     //             title: raw.service_name,
     //             info: raw.description,
@@ -85,13 +85,13 @@ const Header: React.FC = () => {
     //             loc: raw.location_service,
     //             sup: raw.support_hours
     //         }));
-    //         dispatch(setSubscriptionsAction(newArr));
+    //         dispatch(setServicesAction(newArr));
     //         navigate('/services')
     //     }
     //     catch (error) {
-    //             dispatch(setSubscriptionsAction(mockSubscriptions));
+    //             dispatch(setServicesAction(mockServices));
     //     } finally {
-    //         dispatch(setIsSubscriptionsLoadingAction(false));
+    //         dispatch(setIsServicesLoadingAction(false));
     //     }
     // };
 

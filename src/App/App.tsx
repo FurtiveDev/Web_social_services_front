@@ -1,34 +1,34 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import React from 'react';
 import MainPage from 'pages/MainPage';
-import SubscriptionsPage from 'pages/SubscriptionsPage';
+import ServicesPage from 'pages/ServicesPage';
 import DetaliedPage from 'pages/DetaliedPage';
 import RegistrationPage from 'pages/RegistrationPage';
 import LoginPage from 'pages/LoginPage';
 import CurrentApplicationPage from 'pages/CurrentApplicationPage';
 import ApplicationsListPage from 'pages/ApplicationsListPage';
 import SelectedApplicationPage from 'pages/SelectedApplicationPage';
-import AdminSubscriptionsPage from 'pages/AdminSubscriptionsPage';
+import AdminServicesPage from 'pages/AdminServicesPage';
 import axios, {AxiosResponse} from 'axios';
 import Cookies from "universal-cookie";
 import {useDispatch} from "react-redux";
 import {setUserAction, setIsAuthAction, useIsAuth, useUser} from "../Slices/AuthSlice";
-import {useIsSubscriptionsLoading, setIsSubscriptionsLoadingAction, setSubscriptionsAction} from "Slices/MainSlice";
+import {useIsServicesLoading, setIsServicesLoadingAction, setServicesAction} from "Slices/MainSlice";
 import { setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { mockSubscriptions } from '../../consts';
-import { setApplicationsAction, setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction } from 'Slices/ApplicationsSlice'
+import { mockServices } from '../../consts';
+import { setApplicationsAction, setCurrentApplicationDateAction, setServicesFromApplicationAction } from 'Slices/ApplicationsSlice'
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 import AdminApplicationsPage from 'pages/AdminApplicationsPage/AdminApplicationsPage';
-import AddSubscriptionPage from 'pages/AddSubscriptionPage';
-import EditSubscriptionPage from 'pages/EditSubscriptionPage';
-// import EditSubscriptionPage from 'pages/EditSubscriptionPage';
+import AddServicePage from 'pages/AddServicePage';
+import EditServicePage from 'pages/EditServicePage';
+// import EditServicePage from 'pages/EditServicePage';
 
 const cookies = new Cookies();
 
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
   id_service: number,
   service_name: string,
   description: string,
@@ -42,7 +42,7 @@ function App() {
   const dispatch = useDispatch();
   const isAuth = useIsAuth();
   const user = useUser();
-  const isLoading = useIsSubscriptionsLoading();
+  const isLoading = useIsServicesLoading();
 
   const getInitialUserInfo = async () => {
     console.log(cookies.get("session_id"))
@@ -71,7 +71,7 @@ function App() {
   }
 
 
-  const getSubscriptions = async () => {
+  const getServices = async () => {
      {
         const response = await axios('http://localhost:8000/api/services/', {
             method: 'GET',
@@ -83,7 +83,7 @@ function App() {
           getCurrentApplication(response.data.id_request);
           dispatch(setCurrentApplicationIdAction(response.data.id_request))
         }
-        const newArr = subscriptions.map((raw: ReceivedSubscriptionData) => ({
+        const newArr = subscriptions.map((raw: ReceivedServiceData) => ({
             id: raw.id_service,
             title: raw.service_name,
             info: raw.description,
@@ -92,7 +92,7 @@ function App() {
             loc: raw.location_service,
             sup: raw.support_hours
         }));
-        dispatch(setSubscriptionsAction(newArr));
+        dispatch(setServicesAction(newArr));
       }
 };
 
@@ -103,7 +103,7 @@ const getCurrentApplication = async (id: number) => {
       withCredentials: true,
     })
     dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
-    const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
+    const newArr = response.data.services.map((raw: ReceivedServiceData) => ({
       id: raw.id_service,
       title: raw.service_name,
       info: raw.description,
@@ -113,7 +113,7 @@ const getCurrentApplication = async (id: number) => {
       status: raw.status
   }));
 
-  dispatch(setSubscriptionsFromApplicationAction(newArr))
+  dispatch(setServicesFromApplicationAction(newArr))
   } catch(error) {
     console.log("random!")
     throw error;
@@ -124,7 +124,7 @@ const getCurrentApplication = async (id: number) => {
     if (cookies.get("session_id")) {
       getInitialUserInfo();
     }
-    getSubscriptions();
+    getServices();
     // getCurrentApplication(currentApplicationId);
   }, [])
 
@@ -133,11 +133,11 @@ const getCurrentApplication = async (id: number) => {
       <HashRouter>
           <Routes>
               <Route path='/' element={<MainPage/>}/>
-              <Route path="/services" element={<SubscriptionsPage />} />
+              <Route path="/services" element={<ServicesPage />} />
               {isAuth && user.isSuperuser && <>
-                <Route path="/admin" element={<AdminSubscriptionsPage />} />
-                <Route path="/admin/add" element={<AddSubscriptionPage />} />
-                <Route path="/admin/edit/:id" element={<EditSubscriptionPage />} />
+                <Route path="/admin" element={<AdminServicesPage />} />
+                <Route path="/admin/add" element={<AddServicePage />} />
+                <Route path="/admin/edit/:id" element={<EditServicePage />} />
                 <Route path="/requests" element={<AdminApplicationsPage />} />
               </>}
               {isAuth && user.isSuperuser && <Route path="/requests" element={<AdminApplicationsPage />} />}

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
-interface SubscriptionData {
+interface ServiceData {
   id: number;
   title: string;
   info: string;
@@ -22,7 +22,7 @@ interface ApplicationData {
 interface DataState {
   currentApplicationId: number | null;
   currentApplicationDate: string;
-  subscriptionsFromApplication: SubscriptionData[];
+  subscriptionsFromApplication: ServiceData[];
   applications: ApplicationData[];
 }
 
@@ -41,7 +41,7 @@ const dataSlice = createSlice({
     setCurrentApplicationDate(state, action: PayloadAction<string>) {
       state.currentApplicationDate = action.payload;
     },
-    setSubscriptionsFromApplication(state, action: PayloadAction<SubscriptionData[]>) {
+    setServicesFromApplication(state, action: PayloadAction<ServiceData[]>) {
       state.subscriptionsFromApplication = action.payload;
     },
     setApplications(state, action: PayloadAction<ApplicationData[]>) {
@@ -66,7 +66,7 @@ export const useApplications = () =>
 export const {
     setCurrentApplicationId: setCurrentApplicationIdAction,
     setCurrentApplicationDate: setCurrentApplicationDateAction,
-    setSubscriptionsFromApplication: setSubscriptionsFromApplicationAction,
+    setServicesFromApplication: setServicesFromApplicationAction,
     setApplications: setApplicationsAction
 
 } = dataSlice.actions;

@@ -18,7 +18,7 @@ interface ApplicationData {
   service_provided: boolean;
 }
 
-interface SubscriptionData {
+interface ServiceData {
   id: number;
   title: string;
   info: string;
@@ -27,7 +27,7 @@ interface SubscriptionData {
   sup: string;
 }
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
   id_service: number,
   service_name: string,
   description: string,
@@ -37,15 +37,15 @@ export type ReceivedSubscriptionData = {
   location_service: string,
 }
 
-export type SubscriptionsTableProps = {
+export type ServicesTableProps = {
   applications: ApplicationData[];
   className?: string;
 };
 
-const ApplicationsTable: React.FC<SubscriptionsTableProps> = ({applications, className}) => {
+const ApplicationsTable: React.FC<ServicesTableProps> = ({applications, className}) => {
   const dispatch = useDispatch();
   const [isModalWindowOpened, setIsModalWindowOpened] = useState(false);
-  const [currentSubscriptions, setCurrentSubscriptions] = useState<SubscriptionData[]>([])
+  const [currentServices, setCurrentServices] = useState<ServiceData[]>([])
 
   const getCurrentApplication = async (id: number) => {
     try {
@@ -53,7 +53,7 @@ const ApplicationsTable: React.FC<SubscriptionsTableProps> = ({applications, cla
         method: 'GET',
         withCredentials: true,
       })
-      const newArr = response.data.map((raw: ReceivedSubscriptionData) => ({
+      const newArr = response.data.map((raw: ReceivedServiceData) => ({
         id: raw.id_service,
         title: raw.service_name,
         info: raw.description,
@@ -62,7 +62,7 @@ const ApplicationsTable: React.FC<SubscriptionsTableProps> = ({applications, cla
         sup: raw.support_hours,
     }));
     console.log('newArr is!', newArr)
-    setCurrentSubscriptions(newArr)
+    setCurrentServices(newArr)
     } catch(error) {
       throw error;
       console.log('newArr is!')
@@ -111,7 +111,7 @@ const ApplicationsTable: React.FC<SubscriptionsTableProps> = ({applications, cla
       <ModalWindow handleBackdropClick={() => setIsModalWindowOpened(false)} className={styles.modal} active={isModalWindowOpened}>
       <h3 className={styles.modal__title}>Добавленные услуги</h3>
       <div className={styles.modal__list}>
-        {currentSubscriptions.map((subscription: SubscriptionData, index: number) => (
+        {currentServices.map((subscription: ServiceData, index: number) => (
           <div className={styles['modal__list-item']}>
             <div className={styles['modal__list-item-title']}>
                "{subscription.title}"

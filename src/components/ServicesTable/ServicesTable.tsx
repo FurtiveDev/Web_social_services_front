@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import styles from './SubscriptionsTable.module.scss'
+import styles from './ServicesTable.module.scss'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import cn from 'classnames';
@@ -9,9 +9,9 @@ import { useDispatch } from 'react-redux';
 import BasketIcon from 'components/Icons/BasketIcon';
 import { useNavigate } from 'react-router-dom';
 import { useCurrentApplicationDate, useSubscripitonsFromApplication,
-  setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
+  setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 
-interface SubscriptionData {
+interface ServiceData {
   id: number,
   title: string,
   info: string,
@@ -20,18 +20,18 @@ interface SubscriptionData {
   sup: string,
 }
 
-export type SubscriptionsTableProps = {
-  subscriptions: SubscriptionData[];
+export type ServicesTableProps = {
+  subscriptions: ServiceData[];
   className?: string;
   flag?: boolean;
 };
 
-const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, className, flag}) => {
+const ServicesTable: React.FC<ServicesTableProps> = ({subscriptions, className, flag}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const subscripions = useSubscripitonsFromApplication()
 
-  const deleteSubscriptionFromApplication = async (id: number) => {
+  const deleteServiceFromApplication = async (id: number) => {
     try {
       const response = await axios(`http://localhost:8000/api/services_requests/${id}/delete/`, {
         method: 'DELETE',
@@ -39,7 +39,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
       });
   
   
-      dispatch(setSubscriptionsFromApplicationAction(subscripions.filter(subscription => subscription.id !== id)));
+      dispatch(setServicesFromApplicationAction(subscripions.filter(subscription => subscription.id !== id)));
   
     } catch(error) {
       console.error(error);
@@ -47,7 +47,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
   }
 
   const handleDeleteButtonClick = (id: number) => {
-    deleteSubscriptionFromApplication(id);
+    deleteServiceFromApplication(id);
     if (subscriptions.length === 1) {
       setTimeout(() => {
         navigate('/requests');
@@ -69,7 +69,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
                 </tr>
             </thead>
             <tbody>
-                {subscriptions.map((subscription: SubscriptionData, index: number) => (
+                {subscriptions.map((subscription: ServiceData, index: number) => (
                     <tr key={subscription.id}>
                         <td>{index + 1}</td>
                         <td>{subscription.title}</td>
@@ -89,4 +89,4 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
 )
 }
 
-export default SubscriptionsTable
+export default ServicesTable

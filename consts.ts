@@ -1,4 +1,4 @@
-export const mockSubscriptions = [
+export const mockServices = [
     {
         id: 5,
         title: "Помощь на кухне",

@@ -10,12 +10,12 @@ import EditIcon from 'components/Icons/EditIcon';
 import BasketIcon from 'components/Icons/BasketIcon';
 import ModalWindow from 'components/ModalWindow';
 import Form from 'react-bootstrap/Form';
-import {useTitleValue, useSubscriptions,setTitleValueAction, setSubscriptionsAction} from "../../Slices/MainSlice";
+import {useTitleValue, useServices,setTitleValueAction, setServicesAction} from "../../Slices/MainSlice";
 import { useDispatch } from 'react-redux';
 import ImageIcon from 'components/Icons/ImageIcon';
 import { useNavigate } from 'react-router-dom';
 
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
   id_service: number,
   service_name: string,
   description: string,
@@ -42,7 +42,7 @@ export type TableData = {
   // handleDeleteButtonClick?: () => void;
 };
 
-export type SubscriptionData =  {
+export type ServiceData =  {
   id: number;
   title: string;
   info: string;
@@ -54,32 +54,32 @@ export type SubscriptionData =  {
 
 const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
   const navigate = useNavigate()
-  const subscriptions = useSubscriptions()
+  const subscriptions = useServices()
   const dispatch = useDispatch()
 
   const [isAddModalWindowOpened, setIsAddModalWindowOpened] = useState(false)
   const [isDeleteModalWindowOpened, setIsDeleteModalWindowOpened] = useState(false)
   const [isImageModalWindowOpened, setIsImageModalWindowOpened] = useState(false)
 
-  const [subscriptionTitleValue, setSubscriptionTitleValue] = useState('')
-  const [subscriptionInfoValue, setSubscriptionInfoValue] = useState('')
-  const [currentSubscriptionId, setCurrentSubscriptionId] = useState<number>()
+  const [subscriptionTitleValue, setServiceTitleValue] = useState('')
+  const [subscriptionInfoValue, setServiceInfoValue] = useState('')
+  const [currentServiceId, setCurrentServiceId] = useState<number>()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState('')
   const [supportHoursValue, setSupportHoursValue] = useState('');
   const [locationServiceValue, setLocationServiceValue] = useState('');
 
   
-  const deleteSubscription = async () => {
+  const deleteService = async () => {
     try {
-      await axios(`http://localhost:8000/api/services/${currentSubscriptionId}/delete/`, {
+      await axios(`http://localhost:8000/api/services/${currentServiceId}/delete/`, {
         method: 'DELETE',
         withCredentials: true,
 
       })
 
-      dispatch(setSubscriptionsAction(subscriptions.filter((subscription) => {
-        return subscription.id !== currentSubscriptionId 
+      dispatch(setServicesAction(subscriptions.filter((subscription) => {
+        return subscription.id !== currentServiceId 
       })))
       setIsDeleteModalWindowOpened(false)
     } catch(e) {
@@ -94,7 +94,7 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
         formData.append('file', selectedImage);
 
         const response = await axios.post(
-          `http://localhost:8000/api/services/${currentSubscriptionId}/image/`,
+          `http://localhost:8000/api/services/${currentServiceId}/image/`,
           formData,
           {
             headers: {
@@ -103,8 +103,8 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
             withCredentials: true,
           }
         );
-        const updatedSubscriptions = subscriptions.map(subscription => {
-          if (subscription.id === currentSubscriptionId) {
+        const updatedServices = subscriptions.map(subscription => {
+          if (subscription.id === currentServiceId) {
             return {
               ...subscription,
               src: response.data
@@ -112,8 +112,8 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
           }
           return subscription;
         });
-        dispatch(setSubscriptionsAction(updatedSubscriptions))
-        console.log(updatedSubscriptions)
+        dispatch(setServicesAction(updatedServices))
+        console.log(updatedServices)
         setSelectedImage(null)
         toast.success('Изображение успешно загружено')
 
@@ -128,22 +128,22 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
   const handleAddButtonClick = () => {
     navigate('/admin/add')
   }
-  const handleEditButtonClick = (subscription: SubscriptionData) => {
-    setCurrentSubscriptionId(subscription.id)
-    setSubscriptionTitleValue(subscription.title)
-    setSubscriptionInfoValue(subscription.info)
+  const handleEditButtonClick = (subscription: ServiceData) => {
+    setCurrentServiceId(subscription.id)
+    setServiceTitleValue(subscription.title)
+    setServiceInfoValue(subscription.info)
     setLocationServiceValue(subscription.loc)
     setSupportHoursValue(subscription.sup)
     navigate(`/admin/edit/${subscription.id}`)
   }
 
   const handleDeleteButtonClick = (id: number) => {
-    setCurrentSubscriptionId(id)
+    setCurrentServiceId(id)
     setIsDeleteModalWindowOpened(true)
   }
 
-  const handleImageButtonClick = (subscription: SubscriptionData) => {
-    setCurrentSubscriptionId(subscription.id)
+  const handleImageButtonClick = (subscription: ServiceData) => {
+    setCurrentServiceId(subscription.id)
     setIsImageModalWindowOpened(true)
     setCurrentImage(subscription.src)
   }
@@ -191,7 +191,7 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
         <ModalWindow handleBackdropClick={() => setIsDeleteModalWindowOpened(false)} active={isDeleteModalWindowOpened} className={styles.modal}>
           <h3 className={styles.modal__title}>Вы уверены, что хотите удалить данную усулугу?</h3>
           <div className={styles['modal__delete-btns']}>
-            <Button onClick={() => {deleteSubscription()}} className={styles.modal__btn}>Подтвердить</Button>
+            <Button onClick={() => {deleteService()}} className={styles.modal__btn}>Подтвердить</Button>
             <Button onClick={() => setIsDeleteModalWindowOpened(false)} className={styles.modal__btn}>Закрыть</Button>
           </div>
         </ModalWindow>

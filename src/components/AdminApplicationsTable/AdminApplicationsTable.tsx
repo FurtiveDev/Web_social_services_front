@@ -21,7 +21,7 @@ interface ApplicationData {
   service_provided: boolean;
 }
 
-interface SubscriptionData {
+interface ServiceData {
   id: number;
   title: string;
   info: string;
@@ -37,7 +37,7 @@ export type ReceivedUserData = {
   password: string,
   is_superuser: boolean,
 }
-export type ReceivedSubscriptionData = {
+export type ReceivedServiceData = {
   id_service: number,
   service_name: string,
   description: string,
@@ -47,7 +47,7 @@ export type ReceivedSubscriptionData = {
   location_service: string,
 }
 
-export type SubscriptionsTableProps = {
+export type ServicesTableProps = {
   className?: string;
 };
 
@@ -60,12 +60,12 @@ export type ReceivedApplicationData = {
   service_provided: boolean;
 }
 
-const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) => {
+const AdminApplicationsTable: React.FC<ServicesTableProps> = ({className}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const applications = useApplications()
   const [isModalWindowOpened, setIsModalWindowOpened] = useState(false);
-  const [currentSubscriptions, setCurrentSubscriptions] = useState<SubscriptionData[]>([])
+  const [currentServices, setCurrentServices] = useState<ServiceData[]>([])
 
   const getAllApplications = async () => {
     try {
@@ -96,7 +96,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         method: 'GET',
         withCredentials: true,
       })
-      const newArr = response.data.subscriptions.map((raw: ReceivedSubscriptionData) => ({
+      const newArr = response.data.subscriptions.map((raw: ReceivedServiceData) => ({
         id: raw.id_service,
         title: raw.service_name,
         info: raw.description,
@@ -104,7 +104,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         loc: raw.location_service,
         sup: raw.support_hours
     }));
-    setCurrentSubscriptions(newArr)
+    setCurrentServices(newArr)
     console.log('newArr is', newArr)
     } catch(error) {
       throw error;

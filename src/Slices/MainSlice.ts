@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
 
-interface SubscriptionData {
+interface ServiceData {
   id: number,
   title: string,
   info: string,
@@ -13,9 +13,9 @@ interface SubscriptionData {
 
 interface DataState {
   titleValue: string;
-  subscriptions: SubscriptionData[];
+  subscriptions: ServiceData[];
   priceValues: number[];
-  isSubscriptionsLoading: boolean;
+  isServicesLoading: boolean;
   isMainPage: boolean;
 }
 
@@ -25,22 +25,22 @@ const dataSlice = createSlice({
     titleValue: '',
     subscriptions: [],
     priceValues: [0, 10000],
-    isSubscriptionsLoading: false,
+    isServicesLoading: false,
     isMainPage: false
   } as DataState,
   reducers: {
     setTitleValue(state, action: PayloadAction<string>) {
       state.titleValue = action.payload
     },
-    setSubscriptions(state, action: PayloadAction<SubscriptionData[]>) {
+    setServices(state, action: PayloadAction<ServiceData[]>) {
       console.log('pay is', action.payload)
       state.subscriptions = action.payload
     },
     setPriceValues(state, action: PayloadAction<number[]>) {
       state.priceValues = action.payload
     },
-    setIsSubscriptionsLoading(state, action: PayloadAction<boolean>) {
-      state.isSubscriptionsLoading = action.payload
+    setIsServicesLoading(state, action: PayloadAction<boolean>) {
+      state.isServicesLoading = action.payload
     },
     setIsMainPage(state, action: PayloadAction<boolean>) {
       state.isMainPage = action.payload
@@ -54,22 +54,22 @@ const dataSlice = createSlice({
 export const useTitleValue = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.titleValue);
 
-export const useSubscriptions = () =>
+export const useServices = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.subscriptions);
 
 export const usePriceValues = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.priceValues);
 
-export const useIsSubscriptionsLoading = () =>
-  useSelector((state: { mainData: DataState }) => state.mainData.isSubscriptionsLoading);
+export const useIsServicesLoading = () =>
+  useSelector((state: { mainData: DataState }) => state.mainData.isServicesLoading);
 
 export const useIsMainPage = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.isMainPage);
 
 export const {
     setTitleValue: setTitleValueAction,
-    setSubscriptions: setSubscriptionsAction,
-    setIsSubscriptionsLoading: setIsSubscriptionsLoadingAction,
+    setServices: setServicesAction,
+    setIsServicesLoading: setIsServicesLoadingAction,
     setIsMainPage: setIsMainPageAction
 } = dataSlice.actions;
 

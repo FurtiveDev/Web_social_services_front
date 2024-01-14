@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setSubscriptionsAction, useSubscriptions } from "Slices/MainSlice"; // Adjust this import to your actual file structure
+import { setServicesAction, useServices } from "Slices/MainSlice"; // Adjust this import to your actual file structure
 import Header from 'components/Header';
-import styles from './AddSubscriptionPage.module.scss';
-const AddSubscriptionPage: React.FC = () => {
+import styles from './AddServicePage.module.scss';
+const AddServicePage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const subscriptions = useSubscriptions();
+  const subscriptions = useServices();
   const [title, setTitle] = useState('');
   const [info, setInfo] = useState('');
   const [loc, setLoc] = useState('');
   const [sup, setSup] = useState('');
 
-  const postSubscription = async () => {
+  const postService = async () => {
     try {
       const response = await axios(`http://localhost:8000/api/services/post/`, {
         method: 'POST',
@@ -28,7 +28,7 @@ const AddSubscriptionPage: React.FC = () => {
         withCredentials: true
       });
 
-      dispatch(setSubscriptionsAction([...subscriptions, {
+      dispatch(setServicesAction([...subscriptions, {
         id: response.data.id_service,
         title: response.data.service_name,
         info: response.data.description,
@@ -45,7 +45,7 @@ const AddSubscriptionPage: React.FC = () => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await postSubscription();
+    await postService();
   };
 
   return (
@@ -100,4 +100,4 @@ const AddSubscriptionPage: React.FC = () => {
   );
 };
 
-export default AddSubscriptionPage;
+export default AddServicePage;
