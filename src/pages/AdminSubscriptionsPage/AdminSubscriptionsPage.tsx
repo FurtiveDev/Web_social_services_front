@@ -72,7 +72,6 @@ const AdminSubscriptionsPage = () => {
         <Header/>
         <div className={styles['admin__page-wrapper']}>
         {!isSubscriptionsShow && <div className={styles['admin__page-categories']}>
-                    <h1 className={styles['admin__page-title']}>Управление категориями</h1>
                     <div className={styles['admin__page-categories-content']}>
                             <div className={styles['admin__page-categories-actions']}>
                             <td className={styles.table__action}>
