@@ -15,6 +15,7 @@ import EditIcon from 'components/Icons/EditIcon';
 import BasketIcon from 'components/Icons/BasketIcon';
 import AddButton from 'components/Icons/AddButton';
 import BreadCrumbs from 'components/BreadCrumbs'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -29,10 +30,6 @@ export type ReceivedSubscriptionData = {
     location_service: string,
 }
 
-export type CategoryData = {
-    id: number;
-    title: string;
-}
 
 const columns = [
     {
@@ -43,44 +40,20 @@ const columns = [
 ]
 
 const AdminSubscriptionsPage = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const subscriptions = useSubscriptions()
-    const [newCategoryValue, setNewCategoryValue] = useState('')
-    const [isAddModalWindowOpened, setIsAddModalWindowOpened] = useState(false)
-    const [isEditModalWindowOpened, setIsEditModalWindowOpened] = useState(false)
-    const [isDeleteModalWindowOpened, setIsDeleteModalWindowOpened] = useState(false)
     const [isSubscriptionsShow, setIsSubscriptionsShow] = useState(true)
 
 
 
-
-    const handleAddButtonClick = () => {
-        setIsAddModalWindowOpened(true)
-    }
-
-    const handleDeleteButtonClick = () => {
-        setIsDeleteModalWindowOpened(true)
-    }
-
-
     
     React.useEffect(() => {
-        console.log(11111)
     }, [])
   return (
     <div className={styles.admin__page}>
         <Header/>
         <div className={styles['admin__page-wrapper']}>
-        {!isSubscriptionsShow && <div className={styles['admin__page-categories']}>
-                    <div className={styles['admin__page-categories-content']}>
-                            <div className={styles['admin__page-categories-actions']}>
-                            <td className={styles.table__action}>
-                                <AddButton onClick={() => handleAddButtonClick()}/>
-                                <BasketIcon onClick={() => handleDeleteButtonClick()}/>
-                            </td>
-                        </div>
-                    </div>
-                </div>}
             {isSubscriptionsShow && <><h1 className={styles['admin__page-title']}>Список услуг</h1>
 
             <div className={styles['admin__page-title']}>
@@ -90,10 +63,6 @@ const AdminSubscriptionsPage = () => {
             </>}
                     
         </div>
-        <ModalWindow handleBackdropClick={() => {setIsAddModalWindowOpened(false); setIsEditModalWindowOpened(false); newCategoryValue && setNewCategoryValue('')}}
-                className={styles.modal} active={isAddModalWindowOpened || isEditModalWindowOpened}>
-                <h3 className={styles.modal__title}>Заполните данные</h3>
-            </ModalWindow>
     </div>
   )
 }

@@ -4,15 +4,13 @@ import styles from './AdminApplicationsPage.module.scss'
 import Header from 'components/Header'
 import { useDispatch } from 'react-redux'
 import { useApplications, setApplicationsAction } from 'Slices/ApplicationsSlice'
-import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice'
+import { setLinksMapDataAction } from 'Slices/DetailedSlice'
 import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import BreadCrumbs from 'components/BreadCrumbs'
 import { Dropdown } from 'react-bootstrap'
 import ArrowDownIcon from 'components/Icons/ArrowDownIcon'
 import AdminApplicationsTable from 'components/AdminApplicationsTable'
 
-const statuses = ["Все", "Проверяется",'Отказано', "Принято"]
+const statuses = ["Все", "на рассмотрении",'отказано', "принято"]
 
 export type ReceivedApplicationData = {
   id_request: number;
@@ -20,6 +18,7 @@ export type ReceivedApplicationData = {
   creation_date: string;
   completion_date: string;
   user:string;
+  service_provided: boolean;
 }
 
 export type ApplicationData = {
@@ -28,11 +27,11 @@ export type ApplicationData = {
   creation_date: string;
   completion_date: string;
   user: string;
+  service_provided: boolean;
 }
 
 const AdminApplicationsPage = () => {
   const applications = useApplications()
-  const linksMap = useLinksMapData()
   const dispatch = useDispatch()
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
@@ -66,8 +65,11 @@ const AdminApplicationsPage = () => {
       status: raw.status,
       creation_date: raw.creation_date,
       completion_date: raw.completion_date,
-      user: raw.user
-    }));
+      user: raw.user,
+      service_provided: raw.service_provided
+    })).sort((a: ApplicationData, b: ApplicationData) => {
+      return new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime();
+    });
     dispatch(setApplicationsAction(newArr.filter((application: ApplicationData) => {
       return application.user ? application.user.includes(emailValue) : false;
     })));
@@ -94,7 +96,7 @@ const AdminApplicationsPage = () => {
 
   React.useEffect(() => {
     dispatch(setLinksMapDataAction(new Map<string, string>([
-        ['Заявки', '/applications']
+        ['Заявки', '/requests']
     ])))
   }, [])
 

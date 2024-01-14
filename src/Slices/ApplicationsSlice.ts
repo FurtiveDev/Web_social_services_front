@@ -16,6 +16,7 @@ interface ApplicationData {
   creation_date: string;
   completion_date: string;
   user: string;
+  service_provided: boolean;
 }
 
 interface DataState {

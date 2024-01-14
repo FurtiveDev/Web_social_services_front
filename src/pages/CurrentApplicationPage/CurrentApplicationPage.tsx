@@ -33,6 +33,7 @@ const CurrentApplicationPage = () => {
   const linksMap = useLinksMapData();
 
   React.useEffect(() => {
+    SubscriptionToApplicationlist();
     dispatch(setLinksMapDataAction(new Map<string, string>([
       ['Текущая заявка', '/request'],
   ])))
@@ -45,13 +46,36 @@ const CurrentApplicationPage = () => {
         method: 'PUT',
         withCredentials: true
       })
-      console.log('subs!',subscriptions)
       dispatch(setSubscriptionsFromApplicationAction([]));
       dispatch(setCurrentApplicationDateAction(''));
     } catch(error) {
       throw error;
     }
   }
+  const SubscriptionToApplicationlist = async () => {
+    try {
+        const response = await axios(`http://localhost:8000/api/requests/${currentApplicationId}/`, {
+          method: 'GET',
+          withCredentials: true,
+        })
+        dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
+        const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
+          id: raw.id_service,
+          title: raw.service_name,
+          info: raw.description,
+          src: raw.image,
+          loc: raw.location_service,
+          sup: raw.support_hours,
+          status: raw.status
+      }));
+    
+      dispatch(setSubscriptionsFromApplicationAction(newArr))
+      } catch(error) {
+        console.log("random!")
+        throw error;
+      }
+    }
+
 
   const deleteApplication = async () => {
     try {
@@ -71,12 +95,16 @@ const CurrentApplicationPage = () => {
 
   const handleSendButtonClick = () => {
     sendApplication();
-    navigate('/requests')
+    setTimeout(() => {
+      navigate('/requests');
+    }, 200);
   }
 
   const handleDeleteButtonClick = () => {
     deleteApplication();
-    navigate('/requests')
+    setTimeout(() => {
+      navigate('/requests');
+    }, 200);
   }
 
   return (

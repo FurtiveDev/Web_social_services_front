@@ -21,6 +21,9 @@ import { mockSubscriptions } from '../../consts';
 import { setApplicationsAction, setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction } from 'Slices/ApplicationsSlice'
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 import AdminApplicationsPage from 'pages/AdminApplicationsPage/AdminApplicationsPage';
+import AddSubscriptionPage from 'pages/AddSubscriptionPage';
+import EditSubscriptionPage from 'pages/EditSubscriptionPage';
+// import EditSubscriptionPage from 'pages/EditSubscriptionPage';
 
 const cookies = new Cookies();
 
@@ -131,7 +134,12 @@ const getCurrentApplication = async (id: number) => {
           <Routes>
               <Route path='/' element={<MainPage/>}/>
               <Route path="/services" element={<SubscriptionsPage />} />
-              {isAuth && user.isSuperuser && <Route path="/admin" element={<AdminSubscriptionsPage />} />}
+              {isAuth && user.isSuperuser && <>
+                <Route path="/admin" element={<AdminSubscriptionsPage />} />
+                <Route path="/admin/add" element={<AddSubscriptionPage />} />
+                <Route path="/admin/edit/:id" element={<EditSubscriptionPage />} />
+                <Route path="/requests" element={<AdminApplicationsPage />} />
+              </>}
               {isAuth && user.isSuperuser && <Route path="/requests" element={<AdminApplicationsPage />} />}
               <Route path="/services">
                 <Route path=":id" element={<DetaliedPage />} />

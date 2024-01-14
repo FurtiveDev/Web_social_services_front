@@ -1,27 +1,3 @@
-export const categories = [
-    {
-        key: "all",
-        value: "Все категории"
-    },
-    {
-        key: "scooter",
-        value: "Самокаты"
-    },
-    {
-        key: "mcd",
-        value: "МЦД"
-    },
-    {
-        key: "underground",
-        value: "Метро / МЦК"
-    },
-    {
-        key: "bike",
-        value: "Велосипеды"
-    },
-]
-
-
 export const mockSubscriptions = [
     {
         id: 5,

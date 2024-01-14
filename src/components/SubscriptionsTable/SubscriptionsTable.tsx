@@ -47,11 +47,13 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
   }
 
   const handleDeleteButtonClick = (id: number) => {
-    deleteSubscriptionFromApplication(id)
-    if (subscripions.length === 1) {
-        navigate('/requests')
+    deleteSubscriptionFromApplication(id);
+    if (subscriptions.length === 1) {
+      setTimeout(() => {
+        navigate('/requests');
+      }, 200);
     }
-  }
+  };
 
   return (
     <div className={styles.table__container}>

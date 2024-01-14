@@ -1,15 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import styles from './ApplicationsTable.module.scss'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import ModalWindow from 'components/ModalWindow'
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
-import { useCurrentApplicationDate, useSubscripitonsFromApplication,
-  setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 import { Link } from 'react-router-dom';
 
 interface ApplicationData {
@@ -17,6 +14,8 @@ interface ApplicationData {
   status: string;
   creation_date: string;
   completion_date: string;
+  user: string;
+  service_provided: boolean;
 }
 
 interface SubscriptionData {

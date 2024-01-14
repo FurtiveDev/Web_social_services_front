@@ -12,13 +12,9 @@ import axios, {AxiosResponse} from 'axios';
 import {useDispatch} from "react-redux";
 import {useUser, useIsAuth, setIsAuthAction, setUserAction} from "../../Slices/AuthSlice";
 import Cookies from "universal-cookie";
-import { toast } from 'react-toastify';
-import {useIsSubscriptionsLoading, setIsSubscriptionsLoadingAction, setSubscriptionsAction} from "Slices/MainSlice";
 import { useSubscripitonsFromApplication } from 'Slices/ApplicationsSlice';
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
-import { setApplicationsAction, setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction } from 'Slices/ApplicationsSlice'
-import { mockSubscriptions } from '../../../consts';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const cookies = new Cookies();
 export type ReceivedSubscriptionData = {
@@ -39,7 +35,7 @@ export type ReceivedApplicationData = {
   }
 
 const Header: React.FC = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const location = useReactRouterLocation();
     const dispatch = useDispatch();
     const [isProfileButtonClicked, setIsProfileButtonClicked] = useState(false);
@@ -52,76 +48,53 @@ const Header: React.FC = () => {
     const handleProfileButtonClick = () => {
         setIsProfileButtonClicked(!isProfileButtonClicked);
     };
-    const getAllApplications = async () => {
-        try {
-          const response = await axios('http://localhost:8000/api/requests/', {
-            method: 'GET',
-            withCredentials: true
-          })
-          const newArr = response.data.map((raw: ReceivedApplicationData) => ({
-            id: raw.id_request,
-            status: raw.status,
-            creation_date: raw.creation_date,
-            completion_date: raw.completion_date,
-            user: raw.user
-        }));
-        console.log('newArr is', response.data)
-        dispatch(setApplicationsAction(newArr))
-        navigate('/requests')
-        } catch(error) {
-          throw error
-        }
-    }
+    // const getAllApplications = async () => {
+    //     try {
+    //       const response = await axios('http://localhost:8000/api/requests/', {
+    //         method: 'GET',
+    //         withCredentials: true
+    //       })
+    //       const newArr = response.data.map((raw: ReceivedApplicationData) => ({
+    //         id: raw.id_request,
+    //         status: raw.status,
+    //         creation_date: raw.creation_date,
+    //         completion_date: raw.completion_date,
+    //         user: raw.user
+    //     }));
+    //     console.log('newArr is', response.data)
+    //     dispatch(setApplicationsAction(newArr))
+    //     navigate('/requests')
+    //     } catch(error) {
+    //       throw error
+    //     }
+    // }
 
-    const getSubscriptions = async () => {
-        let url = 'http://localhost:8000/api/services/';
-        try {
-            const response = await axios(url, {
-                method: 'GET',
-                withCredentials: true 
-            });
-            const jsonData = response.data.services;
-            const newArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
-                id: raw.id_service,
-                title: raw.service_name,
-                info: raw.description,
-                src: raw.image,
-                loc: raw.location_service,
-                sup: raw.support_hours
-            }));
-            dispatch(setSubscriptionsAction(newArr));
-            navigate('/services')
-        }
-        catch (error) {
-                dispatch(setSubscriptionsAction(mockSubscriptions));
-        } finally {
-            dispatch(setIsSubscriptionsLoadingAction(false));
-        }
-    };
+    // const getSubscriptions = async () => {
+    //     let url = 'http://localhost:8000/api/services/';
+    //     try {
+    //         const response = await axios(url, {
+    //             method: 'GET',
+    //             withCredentials: true 
+    //         });
+    //         const jsonData = response.data.services;
+    //         const newArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
+    //             id: raw.id_service,
+    //             title: raw.service_name,
+    //             info: raw.description,
+    //             src: raw.image,
+    //             loc: raw.location_service,
+    //             sup: raw.support_hours
+    //         }));
+    //         dispatch(setSubscriptionsAction(newArr));
+    //         navigate('/services')
+    //     }
+    //     catch (error) {
+    //             dispatch(setSubscriptionsAction(mockSubscriptions));
+    //     } finally {
+    //         dispatch(setIsSubscriptionsLoadingAction(false));
+    //     }
+    // };
 
-    const SubscriptionToApplicationlist = async () => {
-        try {
-            const response = await axios(`http://localhost:8000/api/requests/${currentApplicationId}/`, {
-              method: 'GET',
-              withCredentials: true,
-            })
-            dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
-            const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
-              id: raw.id_service,
-              title: raw.service_name,
-              info: raw.description,
-              src: raw.image,
-              loc: raw.location_service,
-              sup: raw.support_hours,
-              status: raw.status
-          }));
-        
-          dispatch(setSubscriptionsFromApplicationAction(newArr))
-          } catch(error) {
-            console.log("random!")
-            throw error;
-          }
-        }
 
     const logout = async () => {
         try {
@@ -161,24 +134,17 @@ const Header: React.FC = () => {
                 <Link to='/' className={styles.header__logo}>ServicesForDisabled</Link>
     
                 <div className={styles.header__blocks}>
-                    <a className={styles.header__block} onClick={getSubscriptions}>Услуги</a> {/* Возможно переделать */}
+                    <Link className={styles.header__block} to='/services'>Услуги</Link>
                     {isUserAuth && user.isSuperuser && <Link className={styles.header__block} to={'/admin'}>Администрирование</Link>}
-                    {isUserAuth && !user.isSuperuser ? 
-                        <div className={styles.header__block} onClick={getAllApplications}>
-                            Мои заявки
-                        </div>
-                        : isUserAuth && 
-                            <div className={styles.header__block} onClick={getAllApplications}>
-                                    Заявки
-                            </div>
-                                }
+                    {isUserAuth && !user.isSuperuser ? <Link className={styles.header__block} to='/requests'>Мои заявки</Link> 
+                                        : isUserAuth && <Link className={styles.header__block} to='/requests'>Заявки</Link>}
                     {/* {!user.isSuperuser &&  <Link className={styles.header__block} to='/'>Поддержка</Link>} */}
                 </div>
     
                 <div className={styles.header__icons}>
                     
                         {isUserAuth && !user.isSuperuser &&
-                            <div className={styles['application__icon-wrapper']} onClick={SubscriptionToApplicationlist}>
+                            <div className={styles['application__icon-wrapper']}>
                                 <Link
                                     to={`/request/${currentApplicationId}`}
                                     style={{
@@ -208,9 +174,8 @@ const Header: React.FC = () => {
                         : <div className={styles.cancel__icon} onClick={() => setIsBurgerMenuOpened(false)}></div>}
                     {isBurgerMenuOpened &&
                     <div className={styles.burger__menu}>
-                        <a className={styles['burger__menu-item']} onClick={getSubscriptions}>Услуги</a> {/* Возможно переделать */}
-                        <a className={styles['burger__menu-item']} onClick={getAllApplications}>Мои заявки</a> {/* Возможно переделать */}
-                        
+                        <Link className={styles['burger__menu-item']} to={'/services'}>Услуги</Link>
+                        <Link className={styles['burger__menu-item']} to={`/requests`}>Мои заявки</Link>
                     </div>}
                 </div>
     

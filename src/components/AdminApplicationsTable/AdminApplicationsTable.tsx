@@ -5,12 +5,10 @@ import { toast } from 'react-toastify';
 import styles from './AdminApplicationsTable.module.scss'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import ModalWindow from 'components/ModalWindow'
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useApplications, setApplicationsAction } from 'Slices/ApplicationsSlice'
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import CancelIcon from 'components/Icons/CancelIcon';
 import AcceptIcon from 'components/Icons/AcceptIcon';
 
@@ -20,6 +18,7 @@ interface ApplicationData {
   creation_date: string;
   completion_date: string;
   user: string;
+  service_provided: boolean;
 }
 
 interface SubscriptionData {
@@ -58,6 +57,7 @@ export type ReceivedApplicationData = {
   creation_date: string;
   completion_date: string;
   user:string;
+  service_provided: boolean;
 }
 
 const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) => {
@@ -78,7 +78,8 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         status: row.status,
         creaction_date: row.creation_date,
         completion_date: row.completion_date,
-        user: row.user
+        user: row.user,
+        service_provided: row.service_provided
       }));
 
       dispatch(setApplicationsAction(newArr.filter((application: ApplicationData) => {
@@ -91,7 +92,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
 
   const getCurrentApplication = async (id: number) => {
     try {
-      const response = await axios(`http://localhost:8000/applications/${id}`, {
+      const response = await axios(`http://localhost:8000/api/requests/${id}`, {
         method: 'GET',
         withCredentials: true,
       })
@@ -137,8 +138,8 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         if (application.id === id) {
           return {
             ...application,
-            approvingDate: response.data.approving_date,
-            activeDate: response.data.active_date,
+            completion_date: response.data.completion_date,
+            // activeDate: response.data.active_date,
             status: isAccepted ? 'принято' : 'отказано'
           };
         }
@@ -152,11 +153,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
   }
   
 
-  const handleDetailedButtonClick = (id: number) => {
-    getCurrentApplication(id)
-    setIsModalWindowOpened(true)
-  };
-
+ 
   const handleAcceptButtonClick = (id: number) => {
     putApplication(id, true)
   }
@@ -179,6 +176,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
             <th>Пользователь</th>
             <th>Статус</th>
             <th>Дата создания</th>
+            <th>Факт оказания</th>
             <th>Дата завершения</th>
             <th></th>
           </tr>
@@ -192,6 +190,11 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
               <td>{application.user}</td>
               <td>{application.status}</td>
               <td>{application.creation_date}</td>
+              <td>
+                {application.service_provided === true ? '✓' : 
+                application.service_provided === false ? '✗' : 
+                '-'}
+              </td>
               <td>{application.completion_date ? application.completion_date : '-'}</td>
               <td className={styles.table__action}>
                 {/* <Link to={`/applications/${application.id}`}> */}
