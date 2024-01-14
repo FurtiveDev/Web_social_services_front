@@ -12,7 +12,7 @@ import axios, {AxiosResponse} from 'axios';
 import {useDispatch} from "react-redux";
 import {useUser, useIsAuth, setIsAuthAction, setUserAction} from "../../Slices/AuthSlice";
 import Cookies from "universal-cookie";
-import { useSubscripitonsFromApplication } from 'Slices/ApplicationsSlice';
+import { useServitonsFromApplication } from 'Slices/ApplicationsSlice';
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 // import { useNavigate } from 'react-router-dom';
 
@@ -41,7 +41,7 @@ const Header: React.FC = () => {
     const [isProfileButtonClicked, setIsProfileButtonClicked] = useState(false);
     const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false)
     const isUserAuth = useIsAuth();
-    const servicesFromApplications = useSubscripitonsFromApplication();
+    const servicesFromApplications = useServitonsFromApplication();
     const currentApplicationId = useCurrentApplicationId();
     let user = useUser();
 

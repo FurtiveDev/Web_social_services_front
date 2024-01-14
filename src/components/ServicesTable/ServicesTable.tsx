@@ -8,7 +8,7 @@ import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import BasketIcon from 'components/Icons/BasketIcon';
 import { useNavigate } from 'react-router-dom';
-import { useCurrentApplicationDate, useSubscripitonsFromApplication,
+import { useCurrentApplicationDate, useServitonsFromApplication,
   setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 
 interface ServiceData {
@@ -29,7 +29,7 @@ export type ServicesTableProps = {
 const ServicesTable: React.FC<ServicesTableProps> = ({services, className, flag}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const subscripions = useSubscripitonsFromApplication()
+  const Servions = useServitonsFromApplication()
 
   const deleteServiceFromApplication = async (id: number) => {
     try {
@@ -39,7 +39,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({services, className, flag}
       });
   
   
-      dispatch(setServicesFromApplicationAction(subscripions.filter(service => service.id !== id)));
+      dispatch(setServicesFromApplicationAction(Servions.filter(service => service.id !== id)));
   
     } catch(error) {
       console.error(error);

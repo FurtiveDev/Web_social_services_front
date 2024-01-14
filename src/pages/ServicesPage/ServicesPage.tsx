@@ -16,7 +16,7 @@ import {useTitleValue, useServices, useIsServicesLoading,
 
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
 
-import { useCurrentApplicationDate, useSubscripitonsFromApplication,
+import { useCurrentApplicationDate, useServitonsFromApplication,
     setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction,useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 export type Service = {
     id: number,
@@ -52,7 +52,7 @@ const ServicesPage: React.FC = () => {
     const dispatch = useDispatch()
     const titleValue = useTitleValue();
     const services = useServices();
-    const subscripitonsFromApplication = useSubscripitonsFromApplication();
+    const ServitonsFromApplication = useServitonsFromApplication();
     const linksMap = useLinksMapData();
     const isLoading = useIsServicesLoading()
     // const [isLoading, setIsLoading] = React.useState(false)
@@ -133,7 +133,7 @@ const ServicesPage: React.FC = () => {
                 loc: response.data.location_service
             }
             getCurrentApplication();
-            dispatch(setServicesFromApplicationAction([...subscripitonsFromApplication, addedService]))
+            dispatch(setServicesFromApplicationAction([...ServitonsFromApplication, addedService]))
             toast.success("Услуга успешно добавлена в заявку!");
         } catch {
             toast.error("Услуга уже добавлена в заявку!");

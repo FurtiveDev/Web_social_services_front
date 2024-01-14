@@ -9,7 +9,7 @@ import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 import ServicesTable from 'components/ServicesTable'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { useCurrentApplicationDate, useSubscripitonsFromApplication,
+import { useCurrentApplicationDate, useServitonsFromApplication,
   setCurrentApplicationDateAction, setServicesFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
 
@@ -27,7 +27,7 @@ export type ReceivedServiceData = {
 const CurrentApplicationPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const services = useSubscripitonsFromApplication();
+  const services = useServitonsFromApplication();
   const applicationDate = useCurrentApplicationDate();
   const currentApplicationId = useCurrentApplicationId();
   const linksMap = useLinksMapData();

@@ -57,7 +57,7 @@ export const useCurrentApplicationId = () =>
 export const useCurrentApplicationDate = () =>
   useSelector((state: { applicationsData: DataState }) => state.applicationsData.currentApplicationDate);
 
-export const useSubscripitonsFromApplication = () =>
+export const useServitonsFromApplication = () =>
   useSelector((state: { applicationsData: DataState }) => state.applicationsData.servicesFromApplication);
 
 export const useApplications = () =>
