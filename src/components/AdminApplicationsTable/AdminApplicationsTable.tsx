@@ -96,7 +96,7 @@ const AdminApplicationsTable: React.FC<ServicesTableProps> = ({className}) => {
         method: 'GET',
         withCredentials: true,
       })
-      const newArr = response.data.subscriptions.map((raw: ReceivedServiceData) => ({
+      const newArr = response.data.services.map((raw: ReceivedServiceData) => ({
         id: raw.id_service,
         title: raw.service_name,
         info: raw.description,

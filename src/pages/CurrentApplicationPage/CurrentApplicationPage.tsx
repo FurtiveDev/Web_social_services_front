@@ -27,7 +27,7 @@ export type ReceivedServiceData = {
 const CurrentApplicationPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const subscriptions = useSubscripitonsFromApplication();
+  const services = useSubscripitonsFromApplication();
   const applicationDate = useCurrentApplicationDate();
   const currentApplicationId = useCurrentApplicationId();
   const linksMap = useLinksMapData();
@@ -115,13 +115,13 @@ const CurrentApplicationPage = () => {
           Текущая заявка
         </h1>
 
-        {subscriptions.length !== 0 ? <div>
+        {services.length !== 0 ? <div>
           <h5 className={styles['application__page-subtitle']}>
             У вас есть возможность удалять услуги из заявки, удалить всю заявку или отправить заявку на проверку модераторам!
           </h5>
 
           <div className={styles['application__page-info']}>
-            <ServicesTable subscriptions={subscriptions} className={styles['application__page-info-table']}/>
+            <ServicesTable services={services} className={styles['application__page-info-table']}/>
 
             <div className={styles['application__page-info-btns']}>
               <Button onClick={() => handleSendButtonClick()} className={styles['application__page-info-btn']}>Отправить</Button>

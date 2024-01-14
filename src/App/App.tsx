@@ -77,13 +77,13 @@ function App() {
             method: 'GET',
             withCredentials: true 
         });
-        const subscriptions = response.data.services; 
-        console.log("subscriptions!",response.data)
+        const services = response.data.services; 
+        console.log("services!",response.data)
         if (response.data.id_request) {
           getCurrentApplication(response.data.id_request);
           dispatch(setCurrentApplicationIdAction(response.data.id_request))
         }
-        const newArr = subscriptions.map((raw: ReceivedServiceData) => ({
+        const newArr = services.map((raw: ReceivedServiceData) => ({
             id: raw.id_service,
             title: raw.service_name,
             info: raw.description,

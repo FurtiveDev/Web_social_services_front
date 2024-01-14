@@ -65,7 +65,7 @@ const SelectedApplicationPage = () => {
                 <h1 className={styles['application__page-title']}>
                     Добавленные услуги
                 </h1>
-                <ServicesTable flag={true} subscriptions={currentSubsription} className={styles['application__page-table']}/>
+                <ServicesTable flag={true} services={currentSubsription} className={styles['application__page-table']}/>
             </div>
         </div>
     )

@@ -25,7 +25,7 @@ export type ReceivedServiceData = {
 
 const DetailedPage: React.FC = () => {
     const dispatch = useDispatch();
-    const subscription = useService();
+    const service = useService();
     const linksMap = useLinksMapData();
 
     const params = useParams();
@@ -66,20 +66,20 @@ const DetailedPage: React.FC = () => {
         <div className='detailed__page'>
             <Header/>
             <div className={styles['detailed__page-wrapper']} style={{paddingTop: "90px"}}>
-                <BreadCrumbs title = {subscription?.title} links={linksMap}/>
+                <BreadCrumbs title = {service?.title} links={linksMap}/>
                 <div className={styles['detailed__page-container']}>
                     <Image
                         className={styles['detailed__page-image']}
-                        src={subscription?.src ? subscription?.src : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
+                        src={service?.src ? service?.src : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
                         rounded
                     />
                     <div className={styles['detailed__page-info']}>
-                            <h1 className={styles['detailed__page-title']}> <strong>"{subscription?.title}"</strong></h1>
-                        <h4 className={styles['detailed__page-article']}>Часы работы:  <strong>{subscription?.sup}</strong></h4>
-                        <h4 className={styles['detailed__page-article']}>Адрес:  <strong>{subscription?.loc}</strong></h4>
+                            <h1 className={styles['detailed__page-title']}> <strong>"{service?.title}"</strong></h1>
+                        <h4 className={styles['detailed__page-article']}>Часы работы:  <strong>{service?.sup}</strong></h4>
+                        <h4 className={styles['detailed__page-article']}>Адрес:  <strong>{service?.loc}</strong></h4>
                         <div className={styles['detailed__page-description']}>
                             <h4 className={styles['detailed__page-article']}>Описание:</h4>
-                            <p>{subscription?.info}</p>
+                            <p>{service?.info}</p>
                         </div>
                     </div>
                 </div>

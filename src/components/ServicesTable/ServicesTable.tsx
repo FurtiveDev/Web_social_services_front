@@ -21,12 +21,12 @@ interface ServiceData {
 }
 
 export type ServicesTableProps = {
-  subscriptions: ServiceData[];
+  services: ServiceData[];
   className?: string;
   flag?: boolean;
 };
 
-const ServicesTable: React.FC<ServicesTableProps> = ({subscriptions, className, flag}) => {
+const ServicesTable: React.FC<ServicesTableProps> = ({services, className, flag}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const subscripions = useSubscripitonsFromApplication()
@@ -39,7 +39,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({subscriptions, className, 
       });
   
   
-      dispatch(setServicesFromApplicationAction(subscripions.filter(subscription => subscription.id !== id)));
+      dispatch(setServicesFromApplicationAction(subscripions.filter(service => service.id !== id)));
   
     } catch(error) {
       console.error(error);
@@ -48,7 +48,7 @@ const ServicesTable: React.FC<ServicesTableProps> = ({subscriptions, className, 
 
   const handleDeleteButtonClick = (id: number) => {
     deleteServiceFromApplication(id);
-    if (subscriptions.length === 1) {
+    if (services.length === 1) {
       setTimeout(() => {
         navigate('/requests');
       }, 200);
@@ -69,15 +69,15 @@ const ServicesTable: React.FC<ServicesTableProps> = ({subscriptions, className, 
                 </tr>
             </thead>
             <tbody>
-                {subscriptions.map((subscription: ServiceData, index: number) => (
-                    <tr key={subscription.id}>
+                {services.map((service: ServiceData, index: number) => (
+                    <tr key={service.id}>
                         <td>{index + 1}</td>
-                        <td>{subscription.title}</td>
-                        <td>{subscription.sup}</td>
-                        <td>{subscription.loc}</td>
+                        <td>{service.title}</td>
+                        <td>{service.sup}</td>
+                        <td>{service.loc}</td>
                         {!flag && (
                             <td className={styles.table__action}>
-                                <BasketIcon onClick={() => handleDeleteButtonClick(subscription.id)} />
+                                <BasketIcon onClick={() => handleDeleteButtonClick(service.id)} />
                             </td>
                         )}
                         {flag && <td></td>} {/* Пустая ячейка, если flag равен true */}

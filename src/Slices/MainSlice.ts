@@ -13,7 +13,7 @@ interface ServiceData {
 
 interface DataState {
   titleValue: string;
-  subscriptions: ServiceData[];
+  services: ServiceData[];
   priceValues: number[];
   isServicesLoading: boolean;
   isMainPage: boolean;
@@ -23,7 +23,7 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     titleValue: '',
-    subscriptions: [],
+    services: [],
     priceValues: [0, 10000],
     isServicesLoading: false,
     isMainPage: false
@@ -34,7 +34,7 @@ const dataSlice = createSlice({
     },
     setServices(state, action: PayloadAction<ServiceData[]>) {
       console.log('pay is', action.payload)
-      state.subscriptions = action.payload
+      state.services = action.payload
     },
     setPriceValues(state, action: PayloadAction<number[]>) {
       state.priceValues = action.payload
@@ -55,7 +55,7 @@ export const useTitleValue = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.titleValue);
 
 export const useServices = () =>
-  useSelector((state: { mainData: DataState }) => state.mainData.subscriptions);
+  useSelector((state: { mainData: DataState }) => state.mainData.services);
 
 export const usePriceValues = () =>
   useSelector((state: { mainData: DataState }) => state.mainData.priceValues);

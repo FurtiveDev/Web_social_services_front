@@ -22,7 +22,7 @@ interface ApplicationData {
 interface DataState {
   currentApplicationId: number | null;
   currentApplicationDate: string;
-  subscriptionsFromApplication: ServiceData[];
+  servicesFromApplication: ServiceData[];
   applications: ApplicationData[];
 }
 
@@ -31,7 +31,7 @@ const dataSlice = createSlice({
   initialState: {
     currentApplicationId: null,
     currentApplicationDate: '',
-    subscriptionsFromApplication: [],
+    servicesFromApplication: [],
     applications: []
   } as DataState,
   reducers: {
@@ -42,7 +42,7 @@ const dataSlice = createSlice({
       state.currentApplicationDate = action.payload;
     },
     setServicesFromApplication(state, action: PayloadAction<ServiceData[]>) {
-      state.subscriptionsFromApplication = action.payload;
+      state.servicesFromApplication = action.payload;
     },
     setApplications(state, action: PayloadAction<ApplicationData[]>) {
       state.applications = action.payload;
@@ -58,7 +58,7 @@ export const useCurrentApplicationDate = () =>
   useSelector((state: { applicationsData: DataState }) => state.applicationsData.currentApplicationDate);
 
 export const useSubscripitonsFromApplication = () =>
-  useSelector((state: { applicationsData: DataState }) => state.applicationsData.subscriptionsFromApplication);
+  useSelector((state: { applicationsData: DataState }) => state.applicationsData.servicesFromApplication);
 
 export const useApplications = () =>
   useSelector((state: { applicationsData: DataState }) => state.applicationsData.applications);

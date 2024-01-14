@@ -111,10 +111,10 @@ const ApplicationsTable: React.FC<ServicesTableProps> = ({applications, classNam
       <ModalWindow handleBackdropClick={() => setIsModalWindowOpened(false)} className={styles.modal} active={isModalWindowOpened}>
       <h3 className={styles.modal__title}>Добавленные услуги</h3>
       <div className={styles.modal__list}>
-        {currentServices.map((subscription: ServiceData, index: number) => (
+        {currentServices.map((service: ServiceData, index: number) => (
           <div className={styles['modal__list-item']}>
             <div className={styles['modal__list-item-title']}>
-               "{subscription.title}"
+               "{service.title}"
             </div>
           </div>
         ))}

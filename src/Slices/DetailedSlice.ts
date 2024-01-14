@@ -11,19 +11,19 @@ interface ServiceData {
 }
 
 interface DataState {
-  subscription: ServiceData,
+  service: ServiceData,
   LinksMapData: Map<string, string>
 }
 
 const dataSlice = createSlice({
   name: "data",
   initialState: {
-    subscription: {},
+    service: {},
     LinksMapData: new Map<string, string>([['Услуги', '/']])
   } as DataState,
   reducers: {
     setService(state, action: PayloadAction<ServiceData>) {
-        state.subscription = action.payload
+        state.service = action.payload
     },
     setLinksMapData(state, action: PayloadAction<Map<string, string>>) {
       console.log(action.payload)
@@ -33,7 +33,7 @@ const dataSlice = createSlice({
 });
 
 export const useService = () =>
-  useSelector((state: { detailedData: DataState }) => state.detailedData.subscription);
+  useSelector((state: { detailedData: DataState }) => state.detailedData.service);
 
 export const useLinksMapData = () =>
   useSelector((state: { detailedData: DataState }) => state.detailedData.LinksMapData);

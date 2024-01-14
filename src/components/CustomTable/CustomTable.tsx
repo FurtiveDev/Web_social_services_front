@@ -54,15 +54,15 @@ export type ServiceData =  {
 
 const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
   const navigate = useNavigate()
-  const subscriptions = useServices()
+  const services = useServices()
   const dispatch = useDispatch()
 
   const [isAddModalWindowOpened, setIsAddModalWindowOpened] = useState(false)
   const [isDeleteModalWindowOpened, setIsDeleteModalWindowOpened] = useState(false)
   const [isImageModalWindowOpened, setIsImageModalWindowOpened] = useState(false)
 
-  const [subscriptionTitleValue, setServiceTitleValue] = useState('')
-  const [subscriptionInfoValue, setServiceInfoValue] = useState('')
+  const [serviceTitleValue, setServiceTitleValue] = useState('')
+  const [serviceInfoValue, setServiceInfoValue] = useState('')
   const [currentServiceId, setCurrentServiceId] = useState<number>()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState('')
@@ -78,8 +78,8 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
 
       })
 
-      dispatch(setServicesAction(subscriptions.filter((subscription) => {
-        return subscription.id !== currentServiceId 
+      dispatch(setServicesAction(services.filter((service) => {
+        return service.id !== currentServiceId 
       })))
       setIsDeleteModalWindowOpened(false)
     } catch(e) {
@@ -103,14 +103,14 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
             withCredentials: true,
           }
         );
-        const updatedServices = subscriptions.map(subscription => {
-          if (subscription.id === currentServiceId) {
+        const updatedServices = services.map(service => {
+          if (service.id === currentServiceId) {
             return {
-              ...subscription,
+              ...service,
               src: response.data
             };
           }
-          return subscription;
+          return service;
         });
         dispatch(setServicesAction(updatedServices))
         console.log(updatedServices)
@@ -128,13 +128,13 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
   const handleAddButtonClick = () => {
     navigate('/admin/add')
   }
-  const handleEditButtonClick = (subscription: ServiceData) => {
-    setCurrentServiceId(subscription.id)
-    setServiceTitleValue(subscription.title)
-    setServiceInfoValue(subscription.info)
-    setLocationServiceValue(subscription.loc)
-    setSupportHoursValue(subscription.sup)
-    navigate(`/admin/edit/${subscription.id}`)
+  const handleEditButtonClick = (service: ServiceData) => {
+    setCurrentServiceId(service.id)
+    setServiceTitleValue(service.title)
+    setServiceInfoValue(service.info)
+    setLocationServiceValue(service.loc)
+    setSupportHoursValue(service.sup)
+    navigate(`/admin/edit/${service.id}`)
   }
 
   const handleDeleteButtonClick = (id: number) => {
@@ -142,10 +142,10 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
     setIsDeleteModalWindowOpened(true)
   }
 
-  const handleImageButtonClick = (subscription: ServiceData) => {
-    setCurrentServiceId(subscription.id)
+  const handleImageButtonClick = (service: ServiceData) => {
+    setCurrentServiceId(service.id)
     setIsImageModalWindowOpened(true)
-    setCurrentImage(subscription.src)
+    setCurrentImage(service.src)
   }
 
 

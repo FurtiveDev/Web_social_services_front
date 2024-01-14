@@ -42,7 +42,7 @@ const columns = [
 const AdminServicesPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const subscriptions = useServices()
+    const services = useServices()
     const [isServicesShow, setIsServicesShow] = useState(true)
 
 
@@ -57,7 +57,7 @@ const AdminServicesPage = () => {
             {isServicesShow && <><h1 className={styles['admin__page-title']}>Список услуг</h1>
 
             <div className={styles['admin__page-title']}>
-                <CustomTable className={styles['admin__page-table']} data={subscriptions} 
+                <CustomTable className={styles['admin__page-table']} data={services} 
                 columns={columns} flag={2} ></CustomTable>
             </div>
             </>}

@@ -26,7 +26,7 @@ const EditServicePage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState<string>('');
 
-  const subscriptions = useServices()
+  const services = useServices()
   const [title, setTitle] = useState('');
   const [info, setInfo] = useState('');
   const [loc, setLoc] = useState('');
@@ -34,14 +34,14 @@ const EditServicePage: React.FC = () => {
 
   
   useEffect(() => {
-    const subscriptionToEdit = subscriptions.find(subscription => subscription.id.toString() === id);
-    if (subscriptionToEdit) {
-      setTitle(subscriptionToEdit.title);
-      setInfo(subscriptionToEdit.info);
-      setLoc(subscriptionToEdit.loc);
-      setSup(subscriptionToEdit.sup);
+    const serviceToEdit = services.find(service => service.id.toString() === id);
+    if (serviceToEdit) {
+      setTitle(serviceToEdit.title);
+      setInfo(serviceToEdit.info);
+      setLoc(serviceToEdit.loc);
+      setSup(serviceToEdit.sup);
     }
-  }, [id, subscriptions]);
+  }, [id, services]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -63,14 +63,14 @@ const EditServicePage: React.FC = () => {
             withCredentials: true,
           }
         );
-        const updatedServices = subscriptions.map(subscription => {
-          if (subscription.id === id) {
+        const updatedServices = services.map(service => {
+          if (service.id === id) {
             return {
-              ...subscription,
+              ...service,
               src: response.data
             };
           }
-          return subscription;
+          return service;
         });
         dispatch(setServicesAction(updatedServices))
         console.log(updatedServices)
@@ -97,10 +97,10 @@ const EditServicePage: React.FC = () => {
         withCredentials: true
       });
       navigate('/admin');
-      const updatedServices = subscriptions.map(subscription => {
-        if (subscription.id === id) {
+      const updatedServices = services.map(service => {
+        if (service.id === id) {
           return {
-            ...subscription,
+            ...service,
             title: response.data.service_name,
             info: response.data.description,
             src: response.data.image,
@@ -108,7 +108,7 @@ const EditServicePage: React.FC = () => {
             sup: response.data.support_hours
           };
         }
-        return subscription;
+        return service;
       });
 
       dispatch(setServicesAction(updatedServices));

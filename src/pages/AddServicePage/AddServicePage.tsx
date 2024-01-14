@@ -8,7 +8,7 @@ import styles from './AddServicePage.module.scss';
 const AddServicePage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const subscriptions = useServices();
+  const services = useServices();
   const [title, setTitle] = useState('');
   const [info, setInfo] = useState('');
   const [loc, setLoc] = useState('');
@@ -28,7 +28,7 @@ const AddServicePage: React.FC = () => {
         withCredentials: true
       });
 
-      dispatch(setServicesAction([...subscriptions, {
+      dispatch(setServicesAction([...services, {
         id: response.data.id_service,
         title: response.data.service_name,
         info: response.data.description,

@@ -41,7 +41,7 @@ const Header: React.FC = () => {
     const [isProfileButtonClicked, setIsProfileButtonClicked] = useState(false);
     const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false)
     const isUserAuth = useIsAuth();
-    const subscriptionsFromApplications = useSubscripitonsFromApplication();
+    const servicesFromApplications = useSubscripitonsFromApplication();
     const currentApplicationId = useCurrentApplicationId();
     let user = useUser();
 
@@ -149,9 +149,9 @@ const Header: React.FC = () => {
                                     to={`/request/${currentApplicationId}`}
                                     style={{
                                         display: location.pathname === '/requests' ? 'none' : 'block',
-                                        pointerEvents: subscriptionsFromApplications.length === 0 ? 'none' : 'auto',
-                                        color: subscriptionsFromApplications.length === 0 ? 'gray' : 'inherit',
-                                        opacity: subscriptionsFromApplications.length === 0 ? 0.5 : 1
+                                        pointerEvents: servicesFromApplications.length === 0 ? 'none' : 'auto',
+                                        color: servicesFromApplications.length === 0 ? 'gray' : 'inherit',
+                                        opacity: servicesFromApplications.length === 0 ? 0.5 : 1
                                     }}
                                 >
                                     <ApplicationIcon />

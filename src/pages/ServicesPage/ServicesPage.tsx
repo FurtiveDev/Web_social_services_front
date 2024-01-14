@@ -51,7 +51,7 @@ const ServicesPage: React.FC = () => {
     const currentApplicationId = useCurrentApplicationId();
     const dispatch = useDispatch()
     const titleValue = useTitleValue();
-    const subscriptions = useServices();
+    const services = useServices();
     const subscripitonsFromApplication = useSubscripitonsFromApplication();
     const linksMap = useLinksMapData();
     const isLoading = useIsServicesLoading()
@@ -179,13 +179,13 @@ const ServicesPage: React.FC = () => {
                     <Loader className={styles.loader} size='l' />
                  </div>
                  : <div className={styles["main__page-cards"]}>
-                        {subscriptions.map((subscription: Service) => (
+                        {services.map((service: Service) => (
                             <OneCard
-                                id={subscription.id}
-                                src={subscription.src}
-                                onButtonClick={() => postServiceToApplication(subscription.id)}
-                                title={subscription.title}
-                                description={subscription.info}
+                                id={service.id}
+                                src={service.src}
+                                onButtonClick={() => postServiceToApplication(service.id)}
+                                title={service.title}
+                                description={service.info}
                             />
                         ))}
                     </div>
