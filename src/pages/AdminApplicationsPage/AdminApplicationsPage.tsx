@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button'
 import { Dropdown } from 'react-bootstrap'
 import ArrowDownIcon from 'components/Icons/ArrowDownIcon'
 import AdminApplicationsTable from 'components/AdminApplicationsTable'
+import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice'
 
 const statuses = ["Все", "на рассмотрении",'отказано', "принято", "зарегистрирован"]
 
@@ -17,14 +18,25 @@ export type ReceivedApplicationData = {
   status: string;
   creation_date: string;
   completion_date: string;
+  user:string;
+}
+
+export type ApplicationData = {
+  id: number;
+  status: string;
+  creation_date: string;
+  completion_date: string;
+  user: string;
 }
 
 const AdminApplicationsPage = () => {
   const applications = useApplications()
+  const linksMapData = useLinksMapData()
   const dispatch = useDispatch()
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
   const [statusValue, setStatusValue] = useState(statuses[0])
+  const [user, setEmailValue] = useState('')
 
   const getAllApplications = async () => {
     let res = ''
@@ -52,13 +64,28 @@ const AdminApplicationsPage = () => {
         id: raw.id_request,
         status: raw.status,
         creation_date: raw.creation_date,
-        completion_date: raw.completion_date
+        completion_date: raw.completion_date,
+        user: raw.user
     }));
+    dispatch(setApplicationsAction(newArr.filter((application: ApplicationData) => {
+      return application.user ? application.user.includes(user) : false;
+    })));
     dispatch(setApplicationsAction(newArr))
     } catch(error) {
       throw error
     }
   };
+  React.useEffect(() => {
+    dispatch(setApplicationsAction(applications.filter((application: ApplicationData) => {
+      return application.user ? application.user.includes(user) : false;
+    })));
+  }, [user])
+
+  React.useEffect(() => {
+    
+  }, [])
+
+
   useEffect(() => {
     const intervalId = setInterval(getAllApplications, 2000);
 
@@ -84,7 +111,7 @@ const AdminApplicationsPage = () => {
     <div className={styles.admin__page}>
       <Header></Header>
         <div className={styles['admin__page-wrapper']}>
-          <h1 className={styles['admin__page-title']}>Заявки всех пользователей</h1>
+          <h1 className={styles['admin__page-title']}>Заявки всех пользователей</h1> 
           <Form onSubmit={(event: React.FormEvent<HTMLFormElement>) => handleFormSubmit(event)}
           className={styles['form']}>
               <div className={styles.form__item}>
@@ -116,6 +143,17 @@ const AdminApplicationsPage = () => {
                     ))}
                     </Dropdown.Menu>
                 </Dropdown>
+              </div>
+              <div className={styles.form__item}>
+              <Form.Control 
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                setEmailValue(event.target.value);
+              }} 
+              value={user} 
+              className={styles.form__input} 
+              type="text" 
+              placeholder="E-mail *" 
+              />
               </div>
               <Button className={styles.form__btn} type='submit'>Найти</Button>
           </Form>

@@ -8,6 +8,7 @@ import BreadCrumbs from 'components/BreadCrumbs';
 import { useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 import SubscriptionsTable from 'components/SubscriptionsTable'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { useCurrentApplicationDate, useSubscripitonsFromApplication,
   setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
@@ -24,6 +25,7 @@ export type ReceivedSubscriptionData = {
 }
 
 const CurrentApplicationPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const subscriptions = useSubscripitonsFromApplication();
   const applicationDate = useCurrentApplicationDate();
@@ -32,22 +34,20 @@ const CurrentApplicationPage = () => {
 
   React.useEffect(() => {
     dispatch(setLinksMapDataAction(new Map<string, string>([
-      ['Текущая заявка', '/requests'],
+      ['Текущая заявка', '/request'],
   ])))
   }, [])
+  
 
   const sendApplication = async () => {
-    console.log("lolo",subscriptions)
     try {
       const response = await axios(`http://localhost:8000/api/requests/send/`, {
         method: 'PUT',
         withCredentials: true
       })
-
+      console.log('subs!',subscriptions)
       dispatch(setSubscriptionsFromApplicationAction([]));
       dispatch(setCurrentApplicationDateAction(''));
-      console.log(subscriptions)
-      toast.success("Заявка успешно отправлена на проверку!");
     } catch(error) {
       throw error;
     }
@@ -62,7 +62,6 @@ const CurrentApplicationPage = () => {
 
     dispatch(setSubscriptionsFromApplicationAction([]));
     dispatch(setCurrentApplicationDateAction(''));
-    toast.success("Заявка успешно удалена!");
     }
     catch(error) {
       throw error;
@@ -72,17 +71,18 @@ const CurrentApplicationPage = () => {
 
   const handleSendButtonClick = () => {
     sendApplication();
+    navigate('/requests')
   }
 
   const handleDeleteButtonClick = () => {
     deleteApplication();
+    navigate('/requests')
   }
 
   return (
     <div className={styles.application__page}>
       <Header/>
       <div className={styles['application__page-wrapper']}>
-        <BreadCrumbs title ='Текущая заявка' links={linksMap}></BreadCrumbs>
         <h1 className={styles['application__page-title']}>
           Текущая заявка
         </h1>

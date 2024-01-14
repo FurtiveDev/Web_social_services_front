@@ -22,30 +22,30 @@ const ApplicationsListPage = () => {
     const linksMap = useLinksMapData();
     const [isModalWindowOpened, setIsModalWindowOpened] = useState(false);
 
-    const getAllApplications = async () => {
-        try {
-          const response = await axios('http://localhost:8000/api/requests', {
-            method: 'GET',
-            withCredentials: true
-          })
-          const newArr = response.data.map((raw: ReceivedApplicationData) => ({
-            id: raw.id_request,
-            status: raw.status,
-            creation_date: raw.creation_date,
-            completion_date: raw.completion_date
-        }));
-        console.log('newArr is', response.data)
-        dispatch(setApplicationsAction(newArr))
-        } catch(error) {
-          throw error
-        }
-    }
+    // const getAllApplications = async () => {
+    //     try {
+    //       const response = await axios('http://localhost:8000/api/requests/', {
+    //         method: 'GET',
+    //         withCredentials: true
+    //       })
+    //       const newArr = response.data.map((raw: ReceivedApplicationData) => ({
+    //         id: raw.id_request,
+    //         status: raw.status,
+    //         creation_date: raw.creation_date,
+    //         completion_date: raw.completion_date
+    //     }));
+    //     console.log('newArr is', response.data)
+    //     dispatch(setApplicationsAction(newArr))
+    //     } catch(error) {
+    //       throw error
+    //     }
+    // }
 
     React.useEffect(() => {
         dispatch(setLinksMapDataAction(new Map<string, string>([
             ['Заявки', '/requests']
         ])))
-        getAllApplications()
+        //getAllApplications()
     }, [])
     
     return (

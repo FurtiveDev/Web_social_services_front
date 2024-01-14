@@ -15,8 +15,8 @@ import {useTitleValue, useSubscriptions, useIsSubscriptionsLoading,
       setTitleValueAction, setSubscriptionsAction, setIsSubscriptionsLoadingAction} from "../../Slices/MainSlice";
 
 import { useLinksMapData, setLinksMapDataAction } from 'Slices/DetailedSlice';
-
-import { useSubscripitonsFromApplication, setSubscriptionsFromApplicationAction } from 'Slices/ApplicationsSlice';
+import { useCurrentApplicationDate, useSubscripitonsFromApplication,
+    setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction,useCurrentApplicationId } from 'Slices/ApplicationsSlice'
 
 export type Subscription = {
     id: number,
@@ -53,6 +53,7 @@ const SubscriptionsPage: React.FC = () => {
     const subscriptions = useSubscriptions();
     const subscripitonsFromApplication = useSubscripitonsFromApplication();
     const linksMap = useLinksMapData();
+    const currentApplicationId = useCurrentApplicationId();
     const isLoading = useIsSubscriptionsLoading()
     // const [isLoading, setIsLoading] = React.useState(false)
 
@@ -62,8 +63,6 @@ const SubscriptionsPage: React.FC = () => {
 
     React.useEffect(() => {
         // Здесь вызываем функцию загрузки данных при монтировании компонента
-        dispatch(setIsSubscriptionsLoadingAction(true));
-        getSubscriptions();
         // Установка ссылок для breadcrumbs
         dispatch(setLinksMapDataAction(new Map<string, string>([
           ['Услуги', '/services']
@@ -111,21 +110,37 @@ const SubscriptionsPage: React.FC = () => {
                 method: 'POST',
                 withCredentials: true,
             })
-            const addedSubscription = {
-                id: response.data.id_service,
-                title: response.data.service_name,
-                info: response.data.description,
-                src: response.data.image,
-                sup: response.data.support_hours,
-                loc: response.data.location_service
-            }
-            dispatch(setSubscriptionsFromApplicationAction([...subscripitonsFromApplication, addedSubscription]))
-            toast.success("Услуга успешно добавлена в заявку!");
-        } catch {
-            toast.error("Услуга уже добавлена в заявку!");
+            const request_id = response.data.id_request;
+            dispatch(setCurrentApplicationIdAction(request_id));
+            SubscriptionToApplicationlist(request_id);
+        } catch(error) {
+            throw error;
         }
     }
-
+    
+    const SubscriptionToApplicationlist = async (applicationId: number) => {
+        try {
+            const response = await axios(`http://localhost:8000/api/requests/${applicationId}/`, {
+              method: 'GET',
+              withCredentials: true,
+            })
+            dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
+            const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
+              id: raw.id_service,
+              title: raw.service_name,
+              info: raw.description,
+              src: raw.image,
+              loc: raw.location_service,
+              sup: raw.support_hours,
+              status: raw.status
+            }));
+            console.log('newArr is', newArr)
+            dispatch(setSubscriptionsFromApplicationAction(newArr))
+        } catch(error) {
+            console.log("random!")
+            throw error;
+        }
+    }
     const handleSearchButtonClick = () => {
         dispatch(setIsSubscriptionsLoadingAction(true))
         getSubscriptions();

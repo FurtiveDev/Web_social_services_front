@@ -19,7 +19,7 @@ export type CardProps = {
 const OneCard: React.FC<CardProps> = ({id, title,description,src, onButtonClick, onImageClick }) => {
   const isUserAuth = useIsAuth();
   const user = useUser();
-  const isSuperuser = user?.isSuperuser; // We get the isSuperuser status from the user object
+  const isSuperuser = user?.isSuperuser; 
   return (
     <Card className={styles.card}>
       <Link className={styles['card__image-link']} to={`/services/${id}`}>

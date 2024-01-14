@@ -53,7 +53,6 @@ function App() {
         },
       })
 
-      console.log('initial!',response.data.email)
       dispatch(setIsAuthAction(true))
       dispatch(setUserAction({
         email: response.data.email,
@@ -70,13 +69,13 @@ function App() {
 
 
   const getSubscriptions = async () => {
-    try {
+     {
         const response = await axios('http://localhost:8000/api/services/', {
             method: 'GET',
             withCredentials: true 
         });
         const subscriptions = response.data.services; 
-        console.log("random",subscriptions)
+        console.log("subscriptions!",response.data)
         if (response.data.id_request) {
           getCurrentApplication(response.data.id_request);
           dispatch(setCurrentApplicationIdAction(response.data.id_request))
@@ -91,42 +90,39 @@ function App() {
             sup: raw.support_hours
         }));
         dispatch(setSubscriptionsAction(newArr));
-    }
-    catch {
-      dispatch(setSubscriptionsAction(mockSubscriptions));
-    } finally {
-      dispatch(setIsSubscriptionsLoadingAction(false))
-    }
+      }
 };
 
 const getCurrentApplication = async (id: number) => {
   try {
-    const response = await axios(`http://localhost:8000/api/requests/${id}`, {
+    const response = await axios(`http://localhost:8000/api/requests/${id}/`, {
       method: 'GET',
       withCredentials: true,
     })
-    dispatch(setCurrentApplicationDateAction(response.data.application.creation_date))
-    const newArr = response.data.map((raw: ReceivedSubscriptionData) => ({
+    dispatch(setCurrentApplicationDateAction(response.data.request.creation_date))
+    const newArr = response.data.services.map((raw: ReceivedSubscriptionData) => ({
       id: raw.id_service,
       title: raw.service_name,
       info: raw.description,
       src: raw.image,
+      loc: raw.location_service,
+      sup: raw.support_hours,
       status: raw.status
   }));
-  console.log("random!",response.data.application.creation_date)
+
   dispatch(setSubscriptionsFromApplicationAction(newArr))
   } catch(error) {
-    
+    console.log("random!")
     throw error;
   }
 }
 
   React.useEffect(() => {
-    dispatch(setIsSubscriptionsLoadingAction(true))
     if (cookies.get("session_id")) {
       getInitialUserInfo();
     }
     getSubscriptions();
+    // getCurrentApplication(currentApplicationId);
   }, [])
 
   return (
@@ -142,7 +138,8 @@ const getCurrentApplication = async (id: number) => {
               </Route>
               {!isAuth && <Route path='/registration' element={<RegistrationPage/>}></Route>}
               {!isAuth && <Route path='/login' element={<LoginPage/>}></Route>}
-              {isAuth && !user.isSuperuser && <Route path='/request' element={<CurrentApplicationPage/>}/>}
+              {isAuth && !user.isSuperuser && <Route path='/request/:id' element={<CurrentApplicationPage />} 
+                                            />}
               {isAuth && !user.isSuperuser && <Route path='/requests' element={<ApplicationsListPage/>}></Route>}
               {isAuth && <Route path="/requests">
                 <Route path=":id" element={<SelectedApplicationPage />} />

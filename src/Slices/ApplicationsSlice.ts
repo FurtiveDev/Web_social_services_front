@@ -15,6 +15,7 @@ interface ApplicationData {
   status: string;
   creation_date: string;
   completion_date: string;
+  user: string;
 }
 
 interface DataState {

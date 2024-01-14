@@ -31,13 +31,9 @@
     &__block {
         text-decoration: none;
         color: inherit;
+        cursor: pointer;
     }
 
-    &__logo {
-        font-weight: 700;
-        text-decoration: none;
-        color: inherit;
-    }
 
     &__icons {
         display: flex;
@@ -53,7 +49,43 @@
             cursor: pointer;
             background-color: red;
         }
+
     }
+}
+.application__icon--disabled {
+  /* Серый цвет для неактивной кнопки */
+  filter: grayscale(100%); /* Делает иконку полностью серой */
+  /* Убедитесь, что нет других правил, которые могут скрывать ссылку */
+}
+
+.header__profile-email {
+  margin-left: 8px; 
+  color: white; 
+  text-decoration: none; 
+  cursor: pointer;
+
+  @include mobileLandscape {
+    font-size: 14px;
+  }
+  
+  @include mobile {
+    font-size: 13px;
+    margin-left: 4px;
+  }
+  
+  @include smallMobile {
+    font-size: 12px;
+    margin-left: 2px;
+  }
+  
+  @include extraSmallMobile {
+    font-size: 10px;
+    margin-left: 2px;
+  }
+}
+
+.header__profile-email:hover {
+  text-decoration: underline; 
 }
 
 .burger__icon {
@@ -90,7 +122,32 @@
   }
 }
 
-
+.header__logo {
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(45deg, #6b443a, #e4ae85); /* Standard syntax */
+  -webkit-background-clip: text; /* For Safari */
+  background-clip: text;
+  color: transparent; /* Fallback: set a background color */
+  
+  @include mobileLandscape {
+      font-size: 16px; // Adjust the font size as needed for mobile landscape view
+  }
+  
+  @include mobile {
+      font-size: 14px; // Adjust for mobile view
+  }
+  
+  @include smallMobile {
+      font-size: 12px; // Adjust for small mobile view
+  }
+  
+  @include extraSmallMobile {
+      font-size: 10px; // Adjust for extra small mobile view
+  }
+  
+  // Add more media queries if needed for different screen sizes
+}
 
 @include tablet {
     .header__wrapper {
@@ -150,6 +207,7 @@
   
     .header__block {
       display: none;
+      cursor: pointer;
     }
   
     .burger__menu {

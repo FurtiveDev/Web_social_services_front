@@ -28,7 +28,7 @@ const SelectedApplicationPage = () => {
 
     const getCurrentApplication = async () => {
         try {
-          const response = await axios(`http://localhost:8000/api/requests/${id}`, {
+          const response = await axios(`http://localhost:8000/api/requests/${id}/`, {
             method: 'GET',
             withCredentials: true,
           })

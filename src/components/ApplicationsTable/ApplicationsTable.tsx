@@ -66,6 +66,7 @@ const ApplicationsTable: React.FC<SubscriptionsTableProps> = ({applications, cla
     setCurrentSubscriptions(newArr)
     } catch(error) {
       throw error;
+      console.log('newArr is!')
     }
   }
 

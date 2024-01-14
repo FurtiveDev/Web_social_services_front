@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import BasketIcon from 'components/Icons/BasketIcon';
+import { useNavigate } from 'react-router-dom';
 import { useCurrentApplicationDate, useSubscripitonsFromApplication,
   setCurrentApplicationDateAction, setSubscriptionsFromApplicationAction, setCurrentApplicationIdAction } from 'Slices/ApplicationsSlice'
 
@@ -26,6 +27,7 @@ export type SubscriptionsTableProps = {
 };
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, className, flag}) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const subscripions = useSubscripitonsFromApplication()
 
@@ -39,15 +41,16 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({subscriptions, c
   
       dispatch(setSubscriptionsFromApplicationAction(subscripions.filter(subscription => subscription.id !== id)));
   
-      toast.success("Услуга успешно удалена!");
     } catch(error) {
-      toast.error("Ошибка при удалении услуги.");
       console.error(error);
     }
   }
 
   const handleDeleteButtonClick = (id: number) => {
     deleteSubscriptionFromApplication(id)
+    if (subscripions.length === 1) {
+        navigate('/requests')
+    }
   }
 
   return (

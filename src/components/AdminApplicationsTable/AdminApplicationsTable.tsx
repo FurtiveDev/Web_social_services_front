@@ -23,6 +23,7 @@ interface ApplicationData {
   status: string;
   creation_date: string;
   completion_date: string;
+  user: string;
 }
 
 interface SubscriptionData {
@@ -60,6 +61,7 @@ export type ReceivedApplicationData = {
   status: string;
   creation_date: string;
   completion_date: string;
+  user:string;
 }
 
 const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) => {
@@ -89,7 +91,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
 
   const getCurrentApplication = async (id: number) => {
     try {
-      const response = await axios(`http://localhost:8000/api/requests/${id}`, {
+      const response = await axios(`http://localhost:8000/api/requests/${id}/`, {
         method: 'GET',
         withCredentials: true,
       })
@@ -119,7 +121,6 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
           },
           withCredentials: true
         })
-        toast.success('Заявка успешно принята!')
       } else {
         await axios(`http://localhost:8000/api/requests/${id}/AdminPut/`, {
           method: 'PUT',
@@ -128,7 +129,6 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
           },
           withCredentials: true
         })
-        toast.success('Заявка успешно отклонена!')
       }
 
       const updatedApplications = applications.map(application => {
@@ -174,6 +174,7 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         <thead>
           <tr className={styles.tableHead}>
             <th>№</th>
+            <th>Пользователь</th>
             <th>Статус</th>
             <th>Дата создания</th>
             <th>Дата завершения</th>
@@ -183,8 +184,9 @@ const AdminApplicationsTable: React.FC<SubscriptionsTableProps> = ({className}) 
         <tbody>
           {applications.map((application: ApplicationData, index: number) => (
             <tr key={application.id}>
-              {application.status !== 'Зарегистрирован' && <> 
+              {application.status !== 'зарегистрирован' && <> 
               <td>{++index}</td>
+              <td>{application.user}</td>
               <td>{application.status}</td>
               <td>{application.creation_date}</td>
               <td>{application.completion_date ? application.completion_date : '-'}</td>

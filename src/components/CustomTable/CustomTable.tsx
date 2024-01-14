@@ -92,9 +92,7 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
         sup: response.data.support_hours,
         src: '',
       }]))
-      toast.success('Услуга успешно добавлена!')
     } catch(e) {
-      toast.error('Услуга с таким названием уже существует!')
     }
   }
 
@@ -127,9 +125,7 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
       });
 
       dispatch(setSubscriptionsAction(updatedSubscriptions))
-      toast.success('Информация успешно обновлена!')
     } catch(e) {
-      toast.error('Услуга с таким названием уже существует!')
     }
   }
   
@@ -145,7 +141,6 @@ const CustomTable: React.FC<TableData> = ({columns, data, className}) => {
         return subscription.id !== currentSubscriptionId 
       })))
       setIsDeleteModalWindowOpened(false)
-      toast.success('Услуга успешно удалена!')
     } catch(e) {
       throw e
     }
